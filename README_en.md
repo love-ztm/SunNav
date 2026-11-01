@@ -1,6 +1,6 @@
 # SunNav
 
-A personal navigation dashboard with a pink glassmorphism aesthetic. Based on [ModernNav](https://github.com/lyan0220/ModernNav), built with React + Tailwind CSS on the frontend and Cloudflare Pages Functions + D1 on the backend — entirely on the Cloudflare free tier.
+A personal navigation dashboard with a pink glassmorphism aesthetic. Based on [SunNav](https://github.com/lyan0220/SunNav), built with React + Tailwind CSS on the frontend and Cloudflare Pages Functions + D1 on the backend — entirely on the Cloudflare free tier.
 
 Live demo: **https://nav.ww.fyi**
 
@@ -32,7 +32,7 @@ Live demo: **https://nav.ww.fyi**
 ## Deploy (Cloudflare Pages)
 
 1. Fork or push this repo → Cloudflare Dashboard → **Workers & Pages** → connect the repo and create a Pages project (framework: Vite, build command `npm run build`)
-2. Create a **D1 database** (e.g. `modern-nav-db`) and run [`schema.sql`](./schema.sql) in its **Console**
+2. Create a **D1 database** (e.g. `sunnav-db`) and run [`schema.sql`](./schema.sql) in its **Console**
 3. In the Pages project → **Settings → Bindings**, add a D1 binding: variable name **`DB`** → select the database → **redeploy**
 4. Open the site, enter the admin panel via the gear icon, sign in with the default code **`admin`**, then change it right away under General → bottom of the page
 
@@ -50,7 +50,7 @@ Cloudflare Pages Functions have no persistent cron, so scheduling is **lazy-trig
 
 ```bash
 npm install
-npx wrangler d1 execute modern-nav-db --local --file=./schema.sql
+npx wrangler d1 execute sunnav-db --local --file=./schema.sql
 npm run dev
 npm run build
 npx wrangler pages dev ./dist
@@ -58,6 +58,6 @@ npx wrangler pages dev ./dist
 
 ## Credits & License
 
-Built on top of [ModernNav](https://github.com/lyan0220/ModernNav) — thanks to the original author.
+Built on top of [SunNav](https://github.com/lyan0220/SunNav) — thanks to the original author.
 
 [MIT](./LICENSE)

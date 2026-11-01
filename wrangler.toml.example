@@ -2,7 +2,7 @@
 #
 # Copy this file to wrangler.toml and fill in your own database id:
 #   cp wrangler.toml.example wrangler.toml
-#   npx wrangler d1 create modern-nav-db
+#   npx wrangler d1 create sunnav-db
 #   -> paste the returned database_id below
 #
 # wrangler.toml itself is gitignored because it contains your real database id.
@@ -12,5 +12,5 @@ compatibility_date = "2024-01-01"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "modern-nav-db"
+database_name = "sunnav-db"
 database_id = "<your-d1-database-id>"

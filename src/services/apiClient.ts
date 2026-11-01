@@ -3,9 +3,9 @@ import { ApiError } from "../types/errors";
 import type { PageMetadata } from "../utils/parseMetadata";
 
 const AUTH_KEYS = {
-  ACCESS_TOKEN: "modernNav_token",
-  TOKEN_EXPIRY: "modernNav_tokenExpiry",
-  USER_LOGGED_OUT: "modernNav_userLoggedOut",
+  ACCESS_TOKEN: "sunNav_token",
+  TOKEN_EXPIRY: "sunNav_tokenExpiry",
+  USER_LOGGED_OUT: "sunNav_userLoggedOut",
 };
 
 const REQUEST_TIMEOUT_MS = 10000;
@@ -73,7 +73,7 @@ class ApiClient {
   // without polling or duplicating token bookkeeping.
   private _emitAuthChanged() {
     if (typeof window === "undefined") return;
-    window.dispatchEvent(new Event("modernnav:auth-changed"));
+    window.dispatchEvent(new Event("sunnav:auth-changed"));
   }
 
   async getAccessToken(): Promise<string | null> {

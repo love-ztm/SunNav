@@ -73,7 +73,7 @@ export function useDesignTokens() {
         const extracted = await getDominantColor(resolvedBackground);
         applyAccent(extracted);
         window.dispatchEvent(
-          new CustomEvent("modernnav:accent-extracted", { detail: { color: extracted } })
+          new CustomEvent("sunnav:accent-extracted", { detail: { color: extracted } })
         );
       } else {
         applyAccent(savedColor);

@@ -21,7 +21,7 @@ export const SyncIndicator: React.FC = () => {
     };
 
     refreshAuthState();
-    window.addEventListener("modernnav:auth-changed", refreshAuthState);
+    window.addEventListener("sunnav:auth-changed", refreshAuthState);
 
     const unsubscribe = storageService.subscribeSyncStatus((status) => {
       setIsSyncing(status);
@@ -29,7 +29,7 @@ export const SyncIndicator: React.FC = () => {
 
     return () => {
       mounted = false;
-      window.removeEventListener("modernnav:auth-changed", refreshAuthState);
+      window.removeEventListener("sunnav:auth-changed", refreshAuthState);
       unsubscribe();
     };
   }, []);

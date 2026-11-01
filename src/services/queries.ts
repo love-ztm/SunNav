@@ -32,9 +32,9 @@ export const queryKeys = {
 
 // --- LocalStorage Persistence (for offline-first) ---
 export const LS_KEYS = {
-  CATEGORIES: "modernNav_categories",
-  BACKGROUND: "modernNav_bg",
-  PREFS: "modernNav_prefs",
+  CATEGORIES: "sunNav_categories",
+  BACKGROUND: "sunNav_bg",
+  PREFS: "sunNav_prefs",
 };
 
 export function readLS<T>(key: string, fallback: T): T {

@@ -296,8 +296,8 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
       const color = (e as CustomEvent<{ color: string }>).detail?.color;
       if (color) setThemeColorInput(color);
     };
-    window.addEventListener("modernnav:accent-extracted", onExtracted);
-    return () => window.removeEventListener("modernnav:accent-extracted", onExtracted);
+    window.addEventListener("sunnav:accent-extracted", onExtracted);
+    return () => window.removeEventListener("sunnav:accent-extracted", onExtracted);
   }, []);
   useEffect(() => {
     const next = draftFromPrefs(prefs, currentBackground);

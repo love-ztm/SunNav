@@ -12,7 +12,7 @@ export interface DailyWallpaper {
   copyright?: string;
 }
 
-const LS_KEY = "modernNav_daily_wallpaper";
+const LS_KEY = "sunNav_daily_wallpaper";
 
 function today(): string {
   return new Date().toISOString().slice(0, 10);

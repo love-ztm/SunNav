@@ -132,7 +132,7 @@ export async function verifyCode(code: string, stored: string): Promise<boolean>
 
 // Used only when no D1 binding exists; no protected endpoint accepts tokens in
 // that mode, so the static value is harmless.
-export const LOCAL_FALLBACK_SECRET = "modernnav-local-mode";
+export const LOCAL_FALLBACK_SECRET = "sunnav-local-mode";
 
 function randomSecret(): string {
   return Array.from(crypto.getRandomValues(new Uint8Array(32)))

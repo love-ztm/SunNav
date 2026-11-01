@@ -1,6 +1,6 @@
 # SunNav
 
-粉色玻璃拟态风格的个人导航仪表盘。基于 [ModernNav](https://github.com/lyan0220/ModernNav) 二次开发，前端 React + Tailwind CSS，后端 Cloudflare Pages Functions + D1，全部跑在 Cloudflare 免费套餐上。
+粉色玻璃拟态风格的个人导航仪表盘。基于 [SunNav](https://github.com/lyan0220/SunNav) 二次开发，前端 React + Tailwind CSS，后端 Cloudflare Pages Functions + D1，全部跑在 Cloudflare 免费套餐上。
 
 线上示例：**https://nav.ww.fyi**
 
@@ -32,7 +32,7 @@
 ## 部署（Cloudflare Pages）
 
 1. Fork 或推送本仓库 → Cloudflare Dashboard → **Workers & Pages** → 连接该仓库创建 Pages 项目（框架选 Vite，构建命令 `npm run build`）
-2. 创建 **D1 数据库**（示例名 `modern-nav-db`），在数据库 **Console** 中执行 [`schema.sql`](./schema.sql)
+2. 创建 **D1 数据库**（示例名 `sunnav-db`），在数据库 **Console** 中执行 [`schema.sql`](./schema.sql)
 3. Pages 项目 → **Settings → Bindings** 添加 D1 绑定：变量名 **`DB`** → 选择该数据库 → **重新部署**
 4. 访问站点，齿轮图标进入后台，默认访问码 **`admin`**，登录后第一时间在 全局设置 → 底部 修改密码
 
@@ -50,7 +50,7 @@ Cloudflare Pages Functions 没有常驻定时器，定时备份采用**懒触发
 
 ```bash
 npm install
-npx wrangler d1 execute modern-nav-db --local --file=./schema.sql
+npx wrangler d1 execute sunnav-db --local --file=./schema.sql
 npm run dev            # 前端开发
 npm run build          # 生产构建
 npx wrangler pages dev ./dist   # 本地全栈模拟（含 Functions + D1）
@@ -68,6 +68,6 @@ npx wrangler pages dev ./dist   # 本地全栈模拟（含 Functions + D1）
 
 ## 致谢与许可
 
-基于 [ModernNav](https://github.com/lyan0220/ModernNav) 二次开发，感谢原作者。
+基于 [SunNav](https://github.com/lyan0220/SunNav) 二次开发，感谢原作者。
 
 [MIT](./LICENSE)

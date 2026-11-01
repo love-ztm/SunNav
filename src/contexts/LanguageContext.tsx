@@ -17,7 +17,7 @@ const translations: Record<Language, Record<string, string>> = { en, zh };
 export function translate(key: string, params?: Record<string, string>): string {
   let lang: Language = "zh";
   if (typeof window !== "undefined") {
-    const saved = localStorage.getItem("modernNavLanguage") as Language | null;
+    const saved = localStorage.getItem("sunNavLanguage") as Language | null;
     if (saved === "en" || saved === "zh") lang = saved;
   }
   return interpolate(translations[lang][key] || key, params);
@@ -37,13 +37,13 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
     if (typeof window === "undefined") return "zh";
-    const savedLang = localStorage.getItem("modernNavLanguage") as Language;
+    const savedLang = localStorage.getItem("sunNavLanguage") as Language;
     return savedLang === "en" || savedLang === "zh" ? savedLang : "zh";
   });
 
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang);
-    localStorage.setItem("modernNavLanguage", lang);
+    localStorage.setItem("sunNavLanguage", lang);
   };
 
   const t = (key: string, params?: Record<string, string>) =>
