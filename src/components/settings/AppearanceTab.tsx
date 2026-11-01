@@ -570,20 +570,20 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                 unit="x"
                 onChange={setFontSize}
               />
+              <SettingsRow label={t("font_weight")}>
+                <SegmentedControl options={fontWeights} value={fontWeight} onChange={setFontWeight} />
+              </SettingsRow>
+              <SettingsRow label={t("nav_style_label")}>
+                <SegmentedControl options={navStyles} value={navStyle} onChange={setNavStyle} />
+              </SettingsRow>
+              <SettingsRow label={t("search_style_label")}>
+                <SegmentedControl
+                  options={searchStyles}
+                  value={searchStyle}
+                  onChange={setSearchStyle}
+                />
+              </SettingsRow>
             </div>
-            <SettingsRow label={t("font_weight")}>
-              <SegmentedControl options={fontWeights} value={fontWeight} onChange={setFontWeight} />
-            </SettingsRow>
-            <SettingsRow label={t("nav_style_label")}>
-              <SegmentedControl options={navStyles} value={navStyle} onChange={setNavStyle} />
-            </SettingsRow>
-            <SettingsRow label={t("search_style_label")}>
-              <SegmentedControl
-                options={searchStyles}
-                value={searchStyle}
-                onChange={setSearchStyle}
-              />
-            </SettingsRow>
           </div>
         </SettingsSection>
 
