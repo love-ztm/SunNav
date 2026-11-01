@@ -187,6 +187,13 @@ export function validatePreferences(data: unknown): ValidationResult {
     }
   }
 
+  // Optional id of the category to open by default.
+  if (d.defaultCategoryId !== undefined && d.defaultCategoryId !== null) {
+    if (typeof d.defaultCategoryId !== "string" || d.defaultCategoryId.length > 500) {
+      return { valid: false, message: "defaultCategoryId must be a string of 500 characters or less" };
+    }
+  }
+
   // Background image blur in px.
   if (d.bgBlur !== undefined) {
     if (

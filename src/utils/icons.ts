@@ -41,6 +41,7 @@ export { default as RotateCcw } from "lucide-react/dist/esm/icons/rotate-ccw";
 export { default as Save } from "lucide-react/dist/esm/icons/save";
 export { default as Search } from "lucide-react/dist/esm/icons/search";
 export { default as Settings } from "lucide-react/dist/esm/icons/settings";
+export { default as Star } from "lucide-react/dist/esm/icons/star";
 export { default as Shield } from "lucide-react/dist/esm/icons/shield";
 export { default as ShieldCheck } from "lucide-react/dist/esm/icons/shield-check";
 export { default as Sliders } from "lucide-react/dist/esm/icons/sliders";

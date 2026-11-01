@@ -60,6 +60,8 @@ export interface UserPreferences {
   bgBlur?: number;
   /** Optional wallpaper used instead of `background` while in dark mode. */
   backgroundDark?: string;
+  /** Category shown by default when the dashboard opens. */
+  defaultCategoryId?: string;
   gridColumns?: number;
   siteTitle?: string;
   faviconApi?: string;

@@ -1,5 +1,14 @@
 import React from "react";
-import { Plus, GripVertical, Pencil, Trash2, X, Lock, Unlock } from "../../utils/icons";
+import {
+  Plus,
+  GripVertical,
+  Pencil,
+  Trash2,
+  X,
+  Lock,
+  Unlock,
+  Star,
+} from "../../utils/icons";
 import { Category } from "../../types";
 import { useLanguage } from "../../contexts/LanguageContext";
 import type { ContentEditorState, ContentEditorActions } from "./useContentEditor";
@@ -8,9 +17,17 @@ interface CategorySidebarProps {
   categories: Category[];
   state: ContentEditorState;
   actions: ContentEditorActions;
+  defaultCategoryId?: string;
+  onSetDefault: (id: string | null) => void;
 }
 
-export const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, state, actions }) => {
+export const CategorySidebar: React.FC<CategorySidebarProps> = ({
+  categories,
+  state,
+  actions,
+  defaultCategoryId,
+  onSetDefault,
+}) => {
   const { t } = useLanguage();
   const {
     selectedCategoryId,
@@ -149,6 +166,25 @@ export const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories, st
               )}
             </div>
             <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity gap-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSetDefault(defaultCategoryId === cat.id ? null : cat.id);
+                }}
+                title={
+                  defaultCategoryId === cat.id ? t("unset_default_cat") : t("set_default_cat")
+                }
+                className={`p-1 rounded transition-colors ${
+                  defaultCategoryId === cat.id
+                    ? "text-[var(--theme-primary)] opacity-100"
+                    : "text-muted hover:text-[var(--theme-primary)]"
+                }`}
+              >
+                <Star
+                  size={12}
+                  fill={defaultCategoryId === cat.id ? "currentColor" : "none"}
+                />
+              </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();

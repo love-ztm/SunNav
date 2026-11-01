@@ -115,7 +115,11 @@ export const useDashboardLogic = () => {
 
   // Derive the actually-rendered selection from `categories` so we never need
   // to write state from inside an effect just to fix up an invalid id.
-  const visibleCategory = categories.find((c) => c.id === activeCategory) ?? categories[0] ?? null;
+  const visibleCategory =
+    categories.find((c) => c.id === activeCategory) ??
+    categories.find((c) => c.id === prefs.defaultCategoryId) ??
+    categories[0] ??
+    null;
   const effectiveActiveCategory = visibleCategory?.id ?? "";
   // Default subcategory: the one sharing the category's name (the category's
   // "own" items), falling back to the first one.

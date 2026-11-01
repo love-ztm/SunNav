@@ -228,5 +228,7 @@
   "webdav_last_backup": "Last auto backup: {time}",
   "webdav_failed": "Operation failed, please try again later.",
   "webdav_target1": "Cloud 1",
-  "webdav_target2": "Cloud 2"
+  "webdav_target2": "Cloud 2",
+  "set_default_cat": "Show by default",
+  "unset_default_cat": "Clear default"
 }
