@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FolderOpen } from "./utils/icons";
+import { apiClient } from "./services/apiClient";
 import { LinkCard } from "./components/LinkCard";
 import { SearchBar } from "./components/SearchBar";
 import { ToastContainer } from "./components/Toast";
@@ -85,6 +86,33 @@ const App: React.FC = () => {
   useEffect(() => {
     document.title = siteTitle || "SunNav";
   }, [siteTitle]);
+
+  // WebDAV lazy-cron: while the page is open, quietly ask the server to run
+  // any due scheduled backup (Pages Functions have no cron of their own).
+  useEffect(() => {
+    const tick = () => {
+      void (async () => {
+        try {
+          if (!(await apiClient.isAuthenticated())) return;
+          const d = new Date();
+          const p = (n: number) => String(n).padStart(2, "0");
+          await apiClient.request("/api/webdav", {
+            method: "POST",
+            body: JSON.stringify({
+              action: "tick",
+              localDate: `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`,
+              localTime: `${p(d.getHours())}:${p(d.getMinutes())}`,
+            }),
+          });
+        } catch {
+          // best-effort; failures surface in the Data tab instead
+        }
+      })();
+    };
+    tick();
+    const id = setInterval(tick, 10 * 60 * 1000);
+    return () => clearInterval(id);
+  }, []);
 
   if (loading) {
     return (

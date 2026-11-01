@@ -14,6 +14,7 @@ import { useViewportScale } from "../../hooks/useViewportScale";
 import { getIconSize } from "../../utils/favicon";
 import { SettingsContainer, SettingsSection } from "./SettingsPrimitives";
 import { parseBookmarksHtml } from "../../utils/parseBookmarks";
+import { WebDavBackup } from "./WebDavBackup";
 
 interface DataTabProps {
   onImport: (categories: Category[], background?: string, prefs?: UserPreferences) => void;
@@ -105,6 +106,8 @@ export const DataTab: React.FC<DataTabProps> = ({
 
   return (
     <SettingsContainer>
+      <WebDavBackup />
+
       <div className="bg-blue-500/5 border border-blue-500/15 rounded-2xl p-5 flex gap-4 items-start">
         <div className="p-2.5 bg-blue-500/10 rounded-xl text-blue-400 shrink-0">
           <Database size={s(20)} />
