@@ -689,25 +689,24 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
         <div className="h-14" />
       </SettingsContainer>
 
-      {/* Floating action bar */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-2 p-2 rounded-2xl border border-white/10 shadow-2xl backdrop-blur-xl bg-black/30">
-        <button
-          onClick={handleResetBackground}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors group"
-        >
-          <RotateCcw size={s(14)} className="group-active:rotate-[-90deg] transition-transform" />
-          <span className="text-[10px] font-bold uppercase tracking-widest">
-            {t("reset_bg_btn")}
-          </span>
-        </button>
-        <button
-          onClick={handleSave}
-          className="btn-primary py-2 px-6 rounded-xl tracking-[0.2em] text-[11px]"
-        >
-          <Save size={s(14)} />
-          <span>{t("update_bg_btn")}</span>
-        </button>
-      </div>
+      {/* Floating actions: pinned to opposite corners so reset and save
+          can't be hit by the same stray click. */}
+      <button
+        onClick={handleResetBackground}
+        className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 shadow-xl backdrop-blur-xl bg-black/30 text-white/70 hover:text-white hover:bg-black/40 transition-colors group"
+      >
+        <RotateCcw size={s(14)} className="group-active:rotate-[-90deg] transition-transform" />
+        <span className="text-[10px] font-bold uppercase tracking-widest">
+          {t("reset_bg_btn")}
+        </span>
+      </button>
+      <button
+        onClick={handleSave}
+        className="btn-primary fixed bottom-6 right-6 z-[100] py-2 px-6 rounded-xl tracking-[0.2em] text-[11px] shadow-xl"
+      >
+        <Save size={s(14)} />
+        <span>{t("update_bg_btn")}</span>
+      </button>
 
       {bgStatus && (
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[200] text-[10px] font-black uppercase tracking-[0.4em] text-emerald-400 animate-fade-in-up drop-shadow-[0_0_8px_rgba(52,211,153,0.5)] pointer-events-none">
