@@ -391,8 +391,8 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
   return (
     <>
       <SettingsContainer style={previewStyles}>
-        {/* Compact two-column layout: halves the page length on wide screens. */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+        {/* Single full-width column: every card aligns edge-to-edge. */}
+        <div className="space-y-4">
         {/* Glass Quality */}
         <SettingsSection
           icon={Layers}
