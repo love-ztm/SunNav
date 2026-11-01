@@ -1,7 +1,30 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      /* Pre-paint the stored theme before React mounts (prevents the black
+         flash on refresh: body defaults to dark but light users flip later). */
+      (function () {
+        try {
+          var prefs = {};
+          try { prefs = JSON.parse(localStorage.getItem("sunNav_prefs") || "{}") || {}; } catch (e) {}
+          var mode = prefs.themeMode || "dark";
+          var dark =
+            mode === "dark" ||
+            (mode !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var bg = localStorage.getItem("sunNav_bg") || "";
+          var isCss = bg && !/^(https?:|data:)/.test(bg);
+          var color = dark ? "#0f172a" : "#fdf2f7";
+          if (isCss && bg && bg.indexOf("gradient") !== -1) color = bg;
+          var st = document.createElement("style");
+          st.textContent =
+            "body{background-color:" + color + ";color:" + (dark ? "#fff" : "#0f172a") + "}";
+          document.head.appendChild(st);
+          document.documentElement.style.colorScheme = dark ? "dark" : "light";
+        } catch (e) {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SunNav - 个人导航页</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
