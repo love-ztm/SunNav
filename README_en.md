@@ -1,6 +1,8 @@
 # SunNav
 
-A personal navigation dashboard with a glassmorphism aesthetic. Built with React + Tailwind CSS + Cloudflare Pages (Functions + D1).
+A personal navigation dashboard with a pink glassmorphism aesthetic. Based on [ModernNav](https://github.com/lyan0220/ModernNav), built with React + Tailwind CSS on the frontend and Cloudflare Pages Functions + D1 on the backend — entirely on the Cloudflare free tier.
+
+Live demo: **https://nav.ww.fyi**
 
 [中文](README.md) | English
 
@@ -8,220 +10,54 @@ A personal navigation dashboard with a glassmorphism aesthetic. Built with React
 
 **Frontend**
 
-- Glassmorphism cards — adjustable blur, saturation, noise, and tint; adaptive light/dark theme
-- Dynamic Island nav bar — floating glass nav on desktop, slide-out drawer on mobile; multiple nav styles
-- Command palette — `Ctrl+K` or `/` to open, fuzzy search with pinyin initial matching
-- Multi-engine search bar — configurable search engines in admin, dropdown switcher; multiple search bar styles
-- Most Visited — automatic click tracking, generates a virtual category of frequently used links
-- Daily wallpaper — one-click Bing daily image, theme color auto-extracted from the wallpaper
-- 1080p / 2K / 4K viewport auto-scaling, all dimensions proportional
-- Light/dark theme (follow-system option), global accent color
-- Private categories — marked categories are visible only when authenticated, completely hidden from visitors
-- English and Chinese
-- PWA offline cache
+- Three-level structure (categories → subgroups → links) with glassmorphism cards
+- Unified search (site / Google / Bing / configurable engines, `/` opens the command palette)
+- Light / dark / system themes, with a dedicated wallpaper for dark mode
+- Daily wallpaper, auto-extracted theme color, background blur, tunable glass settings
+- Card width / height / icon size / **cards per row** — all adjustable in the admin panel
+- Private categories visible only when signed in with the access code
+- Bilingual (English / Chinese), Chinese by default
+- PWA: installable to the home screen
 
-**Admin Panel (`/admin`)**
+**Admin (`/admin`, default access code `admin`)**
 
-- Content — CRUD for categories/subcategories/links, drag & drop reorder
-- General — site title, favicon API, search engine config, most-visited toggle
-- Appearance — background image, daily wallpaper, theme color (auto-extract from image), glass parameters (blur/saturation/noise/tint), border-radius scale, nav style
-- Data — JSON import/export, browser bookmark HTML import
-- Usage stats — category/link overview, never-clicked count, most-visited Top 10
-- Security — change admin password
-- Link form auto-fetches page title and description
+- Content: full CRUD for categories & links, drag-and-drop ordering, ⭐ mark any category as the default one shown on open
+- Appearance: wallpaper, theme color, glass quality, full layout parameters
+- **WebDAV cloud backup**: configure up to two WebDAV targets (Jianguoyun / InfiniCLOUD / AList…)
+  - Scheduled daily backups with a retention count — old files pruned automatically
+  - Browse the backup list and restore any snapshot in one click
+- JSON import/export, browser bookmark import
+- Access code change (PBKDF2-hashed; rotating it signs out all devices)
 
-**Engineering**
+## Deploy (Cloudflare Pages)
 
-- Design token system — all visual parameters driven by CSS custom properties, admin changes take effect instantly
-- Relational storage — D1 tables (categories / subcategories / links) + config KV, automatic schema version migration
-- Diff-based writes — only sends changes, single D1 batch transaction
-- JWT HMAC-SHA256 auth + HttpOnly cookie silent refresh + per-IP rate limiting
-- TanStack Query optimistic updates + LocalStorage offline fallback
-- Multi-level icon fallback (favicon.im → Google → DuckDuckGo)
-- React.lazy route-level code splitting; icons and pinyin table load on demand
+1. Fork or push this repo → Cloudflare Dashboard → **Workers & Pages** → connect the repo and create a Pages project (framework: Vite, build command `npm run build`)
+2. Create a **D1 database** (e.g. `modern-nav-db`) and run [`schema.sql`](./schema.sql) in its **Console**
+3. In the Pages project → **Settings → Bindings**, add a D1 binding: variable name **`DB`** → select the database → **redeploy**
+4. Open the site, enter the admin panel via the gear icon, sign in with the default code **`admin`**, then change it right away under General → bottom of the page
 
-## Tech Stack
+> Changing the access code rotates the JWT signing secret; all signed-in devices must log in again.
 
-| Layer    | Technology                                                        |
-| -------- | ----------------------------------------------------------------- |
-| Frontend | React 18 · Vite 5 · Tailwind 3 · TypeScript 5 · Lucide React      |
-| Data     | TanStack Query v5 · LocalStorage persistence · Optimistic updates |
-| Backend  | Cloudflare Pages Functions                                        |
-| Database | Cloudflare D1 (SQLite)                                            |
-| Auth     | JWT HMAC-SHA256 · HttpOnly Cookie                                 |
-| Tooling  | ESLint · Prettier · Vitest · PWA (vite-plugin-pwa)                |
+## WebDAV scheduled backups
 
-## Getting Started
+Cloudflare Pages Functions have no persistent cron, so scheduling is **lazy-triggered**: while the page is open it quietly checks every 10 minutes and runs a backup once the configured time has passed for the day. The actual backup moment is therefore "the first visit after the scheduled time"; keep the page open for on-the-dot runs.
 
-### Prerequisites
+- Prefer an **app password** (Jianguoyun: Account info → Security → generate app password)
+- The WebDAV URL must be publicly reachable (LAN NAS addresses are not reachable from Cloudflare)
+- Backup files are JSON (categories + wallpaper + prefs) in the same format as the manual export
 
-- Node.js >= 18
-- npm
-
-### Install
+## Development
 
 ```bash
 npm install
-```
-
-### Local Development (Frontend Only)
-
-Data stored in LocalStorage, no backend needed:
-
-```bash
-npm run dev
-```
-
-### Full-Stack Development (with D1)
-
-```bash
-# Initialize local database
 npx wrangler d1 execute modern-nav-db --local --file=./schema.sql
-
-# Build then start Cloudflare Pages simulation
+npm run dev
 npm run build
 npx wrangler pages dev ./dist
 ```
 
-### Common Commands
+## Credits & License
 
-```bash
-npm run build          # Production build
-npm run typecheck      # TypeScript check (frontend + Functions)
-npm run lint           # ESLint
-npm run test           # Vitest unit tests
-npm run test:watch     # Test watch mode
-```
+Built on top of [ModernNav](https://github.com/lyan0220/ModernNav) — thanks to the original author.
 
-## Deployment (Cloudflare Pages)
-
-All you need is a free Cloudflare account. Takes just a few minutes.
-
-### 1. Fork the Repo
-
-Fork this repository to your own GitHub account.
-
-### 2. Create a Pages Project
-
-1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. In the left sidebar, find **Workers & Pages** → click **Create** → choose **Pages** → **Connect to Git**
-3. Select your forked repo and fill in the build settings:
-   - **Framework preset:** `None`
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-4. Click **Save and Deploy** and wait for the first build to finish
-
-### 3. Create and Bind the Database
-
-1. Back in the Cloudflare Dashboard, find **D1 SQL Database** in the left sidebar → click **Create**
-2. Name it `modern-nav-db` and create
-3. Go to the database page, switch to the **Console** tab
-4. Open `schema.sql` from the project, copy all contents, paste into the Console, and click **Execute**
-5. Go back to your Pages project → **Settings** → **Functions** → find **D1 Database Bindings**
-6. Add a binding:
-   - Variable name: `DB` (must be exact)
-   - D1 Database: select `modern-nav-db`
-7. Save, then go to **Deployments** → click **⋯** on the latest deployment → **Retry deployment**
-
-### 4. Start Using
-
-1. Once deployed, visit your site URL (`xxx.pages.dev`)
-2. Click the gear icon on the right side of the nav bar to enter admin
-3. Log in with the default password `admin`
-4. **First thing to do:** go to Security settings and change the default password
-
-> **Upgrading from an older version?** No manual steps needed. After deploying, the schema migration runs automatically on first visit — nothing is lost. The access code is switched to hashed storage on the next successful login. Note: security releases (v1.1+) sign out all logged-in devices once — log in again after deploying. We recommend exporting a backup from the D1 console before upgrading.
-
-## Project Structure
-
-```
-functions/api/                          # Cloudflare Pages Functions
-├── auth.ts                             # Login / refresh / change password
-├── bootstrap.ts                        # Init data + auto migration
-├── health.ts                           # Health check
-├── metadata.ts                         # Web metadata fetch (title/desc/icon)
-├── update.ts                           # Data writes (diff-based)
-├── visit.ts                            # Link click tracking
-└── utils/
-    ├── schema.ts                       # DDL + schema version management
-    ├── migration.ts                    # v1 → v2 migration
-    ├── diff.ts                         # Category diff computation + apply
-    ├── reads.ts                        # D1 reads + bootstrap assembly
-    ├── writes.ts                       # Full writes (migration only)
-    ├── authHelpers.ts                  # JWT / Cookie / rate limiting / code hashing
-    └── validation.ts                   # Data validation
-
-src/
-├── components/
-│   ├── admin/                          # Admin route pages
-│   │   ├── AdminLayout.tsx             # Admin shell (top bar + theme)
-│   │   ├── AdminGuard.tsx              # Auth route guard
-│   │   ├── AdminAuthPage.tsx           # Login page
-│   │   ├── ContentPage.tsx             # Content management
-│   │   ├── GeneralPage.tsx             # General settings
-│   │   ├── AppearancePage.tsx          # Appearance settings
-│   │   ├── DataPage.tsx                # Data backup
-│   │   └── SecurityPage.tsx            # Security settings
-│   ├── settings/                       # Settings panel UI
-│   │   ├── SettingsPrimitives.tsx      # Shared layout primitives
-│   │   ├── ContentTab.tsx              # Content management UI
-│   │   ├── CategorySidebar.tsx         # Category sidebar
-│   │   ├── SubcategoryPanel.tsx        # Subcategory panel
-│   │   ├── LinkCard.tsx                # Link card
-│   │   ├── LinkForm.tsx                # Link form (with metadata fetch)
-│   │   ├── useContentEditor.ts         # Content editing logic
-│   │   ├── AppearanceTab.tsx           # Appearance UI
-│   │   ├── GeneralTab.tsx              # General settings UI
-│   │   ├── DataTab.tsx                 # Data backup UI (with bookmark import)
-│   │   └── SecurityTab.tsx             # Security UI
-│   ├── BackgroundLayer.tsx             # Background rendering
-│   ├── CategoryNav.tsx                 # Nav bar (desktop island + mobile drawer)
-│   ├── CommandPalette.tsx              # Command palette (Ctrl+K fuzzy search)
-│   ├── GlassCard.tsx                   # Glass card component
-│   ├── SearchBar.tsx                   # Multi-engine search
-│   ├── SmartIcon.tsx                   # Icon (scaling + fallback)
-│   ├── Footer.tsx                      # Footer
-│   ├── SkeletonLoader.tsx              # Skeleton loader
-│   ├── SyncIndicator.tsx               # Sync status
-│   ├── IconPicker.tsx                  # Icon picker
-│   └── Toast.tsx                       # Toast notifications
-├── hooks/
-│   ├── useDashboardLogic.ts            # Core business logic (incl. most-visited)
-│   ├── useDesignTokens.ts              # Design token engine (CSS variable writer)
-│   ├── useThemeColor.ts                # Theme color + dark class management
-│   ├── useViewportScale.ts             # Viewport scale factor
-│   ├── useResponsiveColumns.ts         # Responsive columns
-│   ├── useCategoryDragDrop.ts          # Drag & drop
-│   └── useAuth.ts                      # Auth state
-├── services/
-│   ├── apiClient.ts                    # API client (intercept / retry / silent refresh)
-│   ├── queries.ts                      # TanStack Query hooks
-│   └── storage.ts                      # LocalStorage read/write + import/export
-├── contexts/
-│   └── LanguageContext.tsx             # i18n Context
-├── locales/
-│   ├── en.json                         # English translations
-│   └── zh.json                         # Chinese translations
-├── constants/
-│   ├── defaults.ts                     # Default value constants
-│   └── themes.ts                       # Theme preset palettes
-├── types/
-│   ├── index.ts                        # Shared type definitions
-│   └── errors.ts                       # ApiError class
-├── utils/
-│   ├── color.ts                        # Background dominant color extraction
-│   ├── errorHandler.ts                 # Error code → user message mapping
-│   ├── favicon.ts                      # Favicon URL generation
-│   ├── fuzzyMatch.ts                   # Fuzzy matching (prefix/contiguous bonus)
-│   ├── parseBookmarks.ts              # Browser bookmark HTML parser
-│   ├── parseMetadata.ts               # HTML metadata extraction (title/desc/icon)
-│   └── pinyinInitials.ts              # Chinese character → pinyin initial mapping
-├── App.tsx                             # Root component
-├── constants.tsx                       # Search engines etc.
-├── index.tsx                           # Entry (routing + React.lazy code-splitting)
-└── index.css                           # Global styles + theme tokens
-```
-
-## License
-
-[MIT](LICENSE)
+[MIT](./LICENSE)
