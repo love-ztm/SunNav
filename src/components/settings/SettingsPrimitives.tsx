@@ -40,7 +40,12 @@ export const SettingsSection: React.FC<{
         <div className="min-w-0">
           <h3 className="text-sm font-bold text-primary tracking-tight truncate">{title}</h3>
           {description && (
-            <p className="text-xs text-muted mt-0.5 leading-relaxed">{description}</p>
+            <p
+              className="text-[10px] text-muted mt-0.5 leading-snug truncate"
+              title={description}
+            >
+              {description}
+            </p>
           )}
         </div>
       </div>
