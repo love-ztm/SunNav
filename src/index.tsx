@@ -15,7 +15,6 @@ const GeneralPage = React.lazy(() => import("./components/admin/GeneralPage"));
 const AppearancePage = React.lazy(() => import("./components/admin/AppearancePage"));
 const DataPage = React.lazy(() => import("./components/admin/DataPage"));
 const StatsPage = React.lazy(() => import("./components/admin/StatsPage"));
-const SecurityPage = React.lazy(() => import("./components/admin/SecurityPage"));
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {
@@ -96,14 +95,6 @@ root.render(
                   element={
                     <Suspense>
                       <StatsPage />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="security"
-                  element={
-                    <Suspense>
-                      <SecurityPage />
                     </Suspense>
                   }
                 />

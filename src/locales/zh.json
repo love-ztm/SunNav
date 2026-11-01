@@ -27,7 +27,7 @@
   "confirm_code": "确认新代码",
   "show_codes": "显示代码",
   "hide_codes": "隐藏代码",
-  "update_code_btn": "更新代码",
+  "update_code_btn": "保存修改",
   "code_updated": "访问代码更新成功。",
   "code_mismatch": "新代码不匹配。",
   "code_length_err": "新代码至少需要8个字符。",

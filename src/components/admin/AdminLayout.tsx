@@ -5,7 +5,6 @@ import {
   Sliders,
   Image as ImageIcon,
   CloudUpload,
-  Lock,
   LogOut,
   Home,
   TrendingUp,
@@ -26,7 +25,6 @@ const NAV = [
   { to: "/admin/appearance", labelKey: "tab_appearance", Icon: ImageIcon },
   { to: "/admin/data", labelKey: "tab_data", Icon: CloudUpload },
   { to: "/admin/stats", labelKey: "tab_stats", Icon: TrendingUp },
-  { to: "/admin/security", labelKey: "tab_security", Icon: Lock },
 ] as const;
 
 // Admin-only zoom: the panel's 10-12px type runs small on high-res screens,

@@ -4,7 +4,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import { storageService } from "../../services/storage";
 import { useViewportScale } from "../../hooks/useViewportScale";
 import { getIconSize } from "../../utils/favicon";
-import { SettingsContainer, SettingsSection, SettingsRow } from "./SettingsPrimitives";
+import { SettingsSection, SettingsRow } from "./SettingsPrimitives";
 
 export const SecurityTab: React.FC = () => {
   const { t } = useLanguage();
@@ -49,9 +49,9 @@ export const SecurityTab: React.FC = () => {
   };
 
   return (
-    <SettingsContainer>
-      <SettingsSection icon={Shield} title={t("access_control")} description={t("access_desc")}>
-        <form onSubmit={handleUpdate} className="space-y-4">
+    <SettingsSection icon={Shield} title={t("access_control")} description={t("access_desc")}>
+        <form onSubmit={handleUpdate} className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <SettingsRow label={t("current_code")}>
             <input
               type={showPassword ? "text" : "password"}
@@ -76,6 +76,7 @@ export const SecurityTab: React.FC = () => {
               className="input-primary py-3 px-4"
             />
           </SettingsRow>
+          </div>
           <div className="flex items-center justify-between pt-1">
             <button
               type="button"
@@ -106,6 +107,5 @@ export const SecurityTab: React.FC = () => {
           )}
         </form>
       </SettingsSection>
-    </SettingsContainer>
   );
 };

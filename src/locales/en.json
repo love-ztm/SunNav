@@ -27,7 +27,7 @@
   "confirm_code": "Confirm New Code",
   "show_codes": "Show Codes",
   "hide_codes": "Hide Codes",
-  "update_code_btn": "Update Code",
+  "update_code_btn": "Save Changes",
   "code_updated": "Access Code updated successfully.",
   "code_mismatch": "New codes do not match.",
   "code_length_err": "New code must be at least 8 characters.",

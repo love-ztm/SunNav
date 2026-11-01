@@ -15,7 +15,7 @@ const translations: Record<Language, Record<string, string>> = { en, zh };
 // Non-reactive lookup for use outside React (services, event handlers). Reads
 // the persisted language, which the provider keeps in sync on every change.
 export function translate(key: string, params?: Record<string, string>): string {
-  let lang: Language = "en";
+  let lang: Language = "zh";
   if (typeof window !== "undefined") {
     const saved = localStorage.getItem("modernNavLanguage") as Language | null;
     if (saved === "en" || saved === "zh") lang = saved;
@@ -36,9 +36,9 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
-    if (typeof window === "undefined") return "en";
+    if (typeof window === "undefined") return "zh";
     const savedLang = localStorage.getItem("modernNavLanguage") as Language;
-    return savedLang === "en" || savedLang === "zh" ? savedLang : "en";
+    return savedLang === "en" || savedLang === "zh" ? savedLang : "zh";
   });
 
   const handleSetLanguage = (lang: Language) => {

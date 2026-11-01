@@ -24,6 +24,7 @@ import { useViewportScale } from "../../hooks/useViewportScale";
 import { getIconSize, getFaviconUrl } from "../../utils/favicon";
 import { SmartIcon } from "../SmartIcon";
 import { SettingsContainer, SettingsSection, SettingsRow } from "./SettingsPrimitives";
+import { SecurityTab } from "./SecurityTab";
 
 interface GeneralTabProps {
   prefs: UserPreferences;
@@ -347,6 +348,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ prefs, onUpdate }) => {
           <span>{saveStatus ? t("msg_saved") : t("btn_update_settings")}</span>
         </button>
       </div>
+      <SecurityTab />
     </SettingsContainer>
   );
 };
