@@ -1,6 +1,6 @@
 # SunNav
 
-A personal navigation dashboard with a pink glassmorphism aesthetic. Based on [SunNav](https://github.com/lyan0220/SunNav), built with React + Tailwind CSS on the frontend and Cloudflare Pages Functions + D1 on the backend — entirely on the Cloudflare free tier.
+A personal navigation dashboard with a pink glassmorphism aesthetic. Based on the open-source project [ModernNav](https://github.com/lyan0220/ModernNav) by the original author [Lyan](https://github.com/lyan0220), built with React + Tailwind CSS on the frontend and Cloudflare Pages Functions + D1 on the backend — entirely on the Cloudflare free tier.
 
 Live demo: **https://nav.ww.fyi**
 
@@ -34,7 +34,7 @@ Live demo: **https://nav.ww.fyi**
 1. Fork or push this repo → Cloudflare Dashboard → **Workers & Pages** → connect the repo and create a Pages project (framework: Vite, build command `npm run build`)
 2. Create a **D1 database** (e.g. `sunnav-db`) and run [`schema.sql`](./schema.sql) in its **Console**
 3. In the Pages project → **Settings → Bindings**, add a D1 binding: variable name **`DB`** → select the database → **redeploy**
-4. Open the site, enter the admin panel via the gear icon, sign in with the default code **`admin`**, then change it right away under General → bottom of the page
+4. Open the site and enter the admin panel via the gear icon. Default username / password: **admin / admin** (the sign-in page only asks for the access code `admin`). Change it right away under General → bottom of the page
 
 > Changing the access code rotates the JWT signing secret; all signed-in devices must log in again.
 
@@ -58,6 +58,6 @@ npx wrangler pages dev ./dist
 
 ## Credits & License
 
-Built on top of [SunNav](https://github.com/lyan0220/SunNav) — thanks to the original author.
+Built on top of [ModernNav](https://github.com/lyan0220/ModernNav) by the original author [Lyan](https://github.com/lyan0220) — many thanks.
 
 [MIT](./LICENSE)

@@ -1,6 +1,6 @@
 # SunNav
 
-粉色玻璃拟态风格的个人导航仪表盘。基于 [SunNav](https://github.com/lyan0220/SunNav) 二次开发，前端 React + Tailwind CSS，后端 Cloudflare Pages Functions + D1，全部跑在 Cloudflare 免费套餐上。
+粉色玻璃拟态风格的个人导航仪表盘。基于开源项目 [ModernNav](https://github.com/lyan0220/ModernNav)（原作者 [Lyan](https://github.com/lyan0220)）二次开发，前端 React + Tailwind CSS，后端 Cloudflare Pages Functions + D1，全部跑在 Cloudflare 免费套餐上。
 
 线上示例：**https://nav.ww.fyi**
 
@@ -34,7 +34,7 @@
 1. Fork 或推送本仓库 → Cloudflare Dashboard → **Workers & Pages** → 连接该仓库创建 Pages 项目（框架选 Vite，构建命令 `npm run build`）
 2. 创建 **D1 数据库**（示例名 `sunnav-db`），在数据库 **Console** 中执行 [`schema.sql`](./schema.sql)
 3. Pages 项目 → **Settings → Bindings** 添加 D1 绑定：变量名 **`DB`** → 选择该数据库 → **重新部署**
-4. 访问站点，齿轮图标进入后台，默认访问码 **`admin`**，登录后第一时间在 全局设置 → 底部 修改密码
+4. 访问站点，齿轮图标进入后台。默认账号 / 密码：**admin / admin**（登录页只需输入访问码 `admin`），登录后第一时间在 全局设置 → 底部 修改密码
 
 > 修改访问码会轮换 JWT 签名密钥，所有已登录设备需重新登录。
 
@@ -68,6 +68,6 @@ npx wrangler pages dev ./dist   # 本地全栈模拟（含 Functions + D1）
 
 ## 致谢与许可
 
-基于 [SunNav](https://github.com/lyan0220/SunNav) 二次开发，感谢原作者。
+基于 [ModernNav](https://github.com/lyan0220/ModernNav)（原作者 [Lyan](https://github.com/lyan0220)）二次开发，感谢原作者。
 
 [MIT](./LICENSE)
