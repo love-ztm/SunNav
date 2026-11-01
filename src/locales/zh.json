@@ -166,7 +166,7 @@
   "glass_noise": "噪点",
   "glass_tint": "着色",
   "global_tuning": "全局微调",
-  "global_tuning_desc": "调整圆角、间距、字体和组件样式。",
+  "global_tuning_desc": "背景、玻璃效果与组件样式微调。",
   "radius_scale": "圆角系数",
   "density_scale": "密度",
   "font_size_scale": "字号",

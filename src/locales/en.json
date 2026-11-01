@@ -166,7 +166,7 @@
   "glass_noise": "Noise",
   "glass_tint": "Tint",
   "global_tuning": "Global Tuning",
-  "global_tuning_desc": "Adjust radius, spacing, typography, and component styles.",
+  "global_tuning_desc": "Background, glass and component fine-tuning.",
   "radius_scale": "Corner Radius",
   "density_scale": "Density",
   "font_size_scale": "Font Size",

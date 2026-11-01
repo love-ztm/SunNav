@@ -9,7 +9,6 @@ import {
   Wallpaper,
   Sparkles,
   Moon,
-  Layers,
   Type,
 } from "../../utils/icons";
 import { useLanguage } from "../../contexts/LanguageContext";
@@ -394,142 +393,6 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
       <SettingsContainer style={previewStyles}>
         {/* Single full-width column: every card aligns edge-to-edge. */}
         <div className="space-y-4">
-        {/* Glass Quality */}
-        <SettingsSection
-          icon={Layers}
-          title={t("glass_quality")}
-          description={t("glass_quality_desc")}
-        >
-          <div className="space-y-3">
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3 items-center">
-              <div className="relative" title={t("bg_url_label")}>
-                <ImageIcon
-                  size={s(16)}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
-                />
-                <input
-                  type="text"
-                  value={bgInput}
-                  onChange={(e) => setBgInput(e.target.value)}
-                  aria-label={t("bg_url_label")}
-                  placeholder={t("bg_light_placeholder")}
-                  className="input-primary pl-10 pr-10 font-mono text-[11px]"
-                />
-                <button
-                  onClick={() => setBgInput(DAILY_BACKGROUND)}
-                  aria-pressed={isDailyBackground(bgInput)}
-                  title={t("daily_wallpaper")}
-                  className={`absolute right-2.5 top-1/2 -translate-y-1/2 transition-colors ${
-                    isDailyBackground(bgInput)
-                      ? "text-[var(--theme-primary)]"
-                      : "text-muted hover:text-secondary"
-                  }`}
-                >
-                  <Wallpaper size={s(16)} />
-                </button>
-              </div>
-
-              <div className="relative">
-                <Moon
-                  size={s(16)}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
-                />
-                <input
-                  type="text"
-                  value={bgDarkInput}
-                  onChange={(e) => setBgDarkInput(e.target.value)}
-                  aria-label={t("bg_url_label_dark")}
-                  placeholder={t("bg_dark_placeholder")}
-                  className="input-primary pl-10 pr-10 font-mono text-[11px]"
-                />
-                <button
-                  onClick={() => setBgDarkInput(DAILY_BACKGROUND)}
-                  aria-pressed={isDailyBackground(bgDarkInput)}
-                  title={t("daily_wallpaper")}
-                  className={`absolute right-2.5 top-1/2 -translate-y-1/2 transition-colors ${
-                    isDailyBackground(bgDarkInput)
-                      ? "text-[var(--theme-primary)]"
-                      : "text-muted hover:text-secondary"
-                  }`}
-                >
-                  <Wallpaper size={s(16)} />
-                </button>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <label
-                  className="surface-hover rounded-lg p-1 border border-muted cursor-pointer hover:surface-active transition-colors"
-                  title={themeColorInput}
-                >
-                  <input
-                    type="color"
-                    value={themeColorInput}
-                    onChange={handleColorPick}
-                    className="w-9 h-7 rounded cursor-pointer bg-transparent p-0 border-0 block"
-                  />
-                </label>
-                <button
-                  onClick={handleAutoExtract}
-                  disabled={isExtracting}
-                  className="btn-secondary h-9 px-3 rounded-lg disabled:opacity-50"
-                  title={t("btn_auto_extract")}
-                >
-                  {isExtracting ? (
-                    <Loader2 size={s(16)} className="animate-spin" />
-                  ) : (
-                    <Wand2 size={s(16)} />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <RangeSlider
-              label={t("label_blur")}
-              value={bgBlurInput}
-              min={0}
-              max={40}
-              step={1}
-              unit="px"
-              onChange={setBgBlurInput}
-            />
-            <RangeSlider
-              label={t("glass_blur")}
-              value={glassBlur}
-              min={0}
-              max={80}
-              step={2}
-              unit="px"
-              onChange={setGlassBlur}
-            />
-            <RangeSlider
-              label={t("glass_saturation")}
-              value={glassSaturation}
-              min={100}
-              max={300}
-              step={10}
-              unit="%"
-              onChange={setGlassSaturation}
-            />
-            <RangeSlider
-              label={t("glass_noise")}
-              value={glassNoise}
-              min={0}
-              max={1}
-              step={0.05}
-              onChange={setGlassNoise}
-            />
-            <RangeSlider
-              label={t("glass_tint")}
-              value={glassTint}
-              min={0}
-              max={1}
-              step={0.05}
-              onChange={setGlassTint}
-            />
-            </div>
-          </div>
-        </SettingsSection>
 
         {/* Global Tuning */}
         <SettingsSection
@@ -538,6 +401,135 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           description={t("global_tuning_desc")}
         >
           <div className="space-y-4">
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3 items-center">
+                  <div className="relative" title={t("bg_url_label")}>
+                    <ImageIcon
+                      size={s(16)}
+                      className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
+                    />
+                    <input
+                      type="text"
+                      value={bgInput}
+                      onChange={(e) => setBgInput(e.target.value)}
+                      aria-label={t("bg_url_label")}
+                      placeholder={t("bg_light_placeholder")}
+                      className="input-primary pl-10 pr-10 font-mono text-[11px]"
+                    />
+                    <button
+                      onClick={() => setBgInput(DAILY_BACKGROUND)}
+                      aria-pressed={isDailyBackground(bgInput)}
+                      title={t("daily_wallpaper")}
+                      className={`absolute right-2.5 top-1/2 -translate-y-1/2 transition-colors ${
+                        isDailyBackground(bgInput)
+                          ? "text-[var(--theme-primary)]"
+                          : "text-muted hover:text-secondary"
+                      }`}
+                    >
+                      <Wallpaper size={s(16)} />
+                    </button>
+                  </div>
+            
+                  <div className="relative">
+                    <Moon
+                      size={s(16)}
+                      className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
+                    />
+                    <input
+                      type="text"
+                      value={bgDarkInput}
+                      onChange={(e) => setBgDarkInput(e.target.value)}
+                      aria-label={t("bg_url_label_dark")}
+                      placeholder={t("bg_dark_placeholder")}
+                      className="input-primary pl-10 pr-10 font-mono text-[11px]"
+                    />
+                    <button
+                      onClick={() => setBgDarkInput(DAILY_BACKGROUND)}
+                      aria-pressed={isDailyBackground(bgDarkInput)}
+                      title={t("daily_wallpaper")}
+                      className={`absolute right-2.5 top-1/2 -translate-y-1/2 transition-colors ${
+                        isDailyBackground(bgDarkInput)
+                          ? "text-[var(--theme-primary)]"
+                          : "text-muted hover:text-secondary"
+                      }`}
+                    >
+                      <Wallpaper size={s(16)} />
+                    </button>
+                  </div>
+            
+                  <div className="flex items-center gap-2">
+                    <label
+                      className="surface-hover rounded-lg p-1 border border-muted cursor-pointer hover:surface-active transition-colors"
+                      title={themeColorInput}
+                    >
+                      <input
+                        type="color"
+                        value={themeColorInput}
+                        onChange={handleColorPick}
+                        className="w-9 h-7 rounded cursor-pointer bg-transparent p-0 border-0 block"
+                      />
+                    </label>
+                    <button
+                      onClick={handleAutoExtract}
+                      disabled={isExtracting}
+                      className="btn-secondary h-9 px-3 rounded-lg disabled:opacity-50"
+                      title={t("btn_auto_extract")}
+                    >
+                      {isExtracting ? (
+                        <Loader2 size={s(16)} className="animate-spin" />
+                      ) : (
+                        <Wand2 size={s(16)} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+            
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <RangeSlider
+                  label={t("label_blur")}
+                  value={bgBlurInput}
+                  min={0}
+                  max={40}
+                  step={1}
+                  unit="px"
+                  onChange={setBgBlurInput}
+                />
+                <RangeSlider
+                  label={t("glass_blur")}
+                  value={glassBlur}
+                  min={0}
+                  max={80}
+                  step={2}
+                  unit="px"
+                  onChange={setGlassBlur}
+                />
+                <RangeSlider
+                  label={t("glass_saturation")}
+                  value={glassSaturation}
+                  min={100}
+                  max={300}
+                  step={10}
+                  unit="%"
+                  onChange={setGlassSaturation}
+                />
+                <RangeSlider
+                  label={t("glass_noise")}
+                  value={glassNoise}
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  onChange={setGlassNoise}
+                />
+                <RangeSlider
+                  label={t("glass_tint")}
+                  value={glassTint}
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  onChange={setGlassTint}
+                />
+                </div>
+              </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <RangeSlider
                 label={t("radius_scale")}
