@@ -28,7 +28,9 @@ function LinkCardComponent({
   onVisit,
 }: LinkCardProps) {
   const iconSource = link.icon || getFaviconUrl(link.url, faviconApi);
-  const scaledIconSize = Math.round(24 * viewportScale);
+  // Icon scales with the card height (32%, clamped 28-56px) so larger cards
+  // don't look empty; scaledCardHeight already includes the viewport scale.
+  const scaledIconSize = Math.min(56, Math.max(28, Math.round(scaledCardHeight * 0.32)));
   const scaledTitleSize = Math.max(12, Math.round(12 * viewportScale));
 
   return (
