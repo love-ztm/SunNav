@@ -32,7 +32,7 @@
 ## 部署（Cloudflare Pages）
 
 1. Fork 或推送本仓库 → Cloudflare Dashboard → **Workers & Pages** → 连接该仓库创建 Pages 项目（框架选 Vite，构建命令 `npm run build`）
-2. 创建 **D1 数据库**（示例名 `sunnav-db`），在数据库 **Console** 中执行 [`schema.sql`](./schema.sql)
+2. 创建 **D1 数据库**（示例名 `sunnav-db`），在数据库 **Console** 中执行 [`schema-console.sql`](./schema-console.sql)（D1 控制台解析不了带 `--` 注释的 SQL，所以用这份无注释版；带注释的 [`schema.sql`](./schema.sql) 供 wrangler CLI 使用）
 3. Pages 项目 → **Settings → Bindings** 添加 D1 绑定：变量名 **`DB`** → 选择该数据库 → **重新部署**
 4. 访问站点，齿轮图标进入后台。默认账号 / 密码：**admin / admin**（登录页只需输入访问码 `admin`），登录后第一时间在 全局设置 → 底部 修改密码
 

@@ -32,7 +32,7 @@ Live demo: **https://nav.ww.fyi**
 ## Deploy (Cloudflare Pages)
 
 1. Fork or push this repo → Cloudflare Dashboard → **Workers & Pages** → connect the repo and create a Pages project (framework: Vite, build command `npm run build`)
-2. Create a **D1 database** (e.g. `sunnav-db`) and run [`schema.sql`](./schema.sql) in its **Console**
+2. Create a **D1 database** (e.g. `sunnav-db`) and run [`schema-console.sql`](./schema-console.sql) in its **Console** — the D1 dashboard fails to parse `--` comments, so use this comment-free copy; the annotated [`schema.sql`](./schema.sql) is for the wrangler CLI
 3. In the Pages project → **Settings → Bindings**, add a D1 binding: variable name **`DB`** → select the database → **redeploy**
 4. Open the site and enter the admin panel via the gear icon. Default username / password: **admin / admin** (the sign-in page only asks for the access code `admin`). Change it right away under General → bottom of the page
 
