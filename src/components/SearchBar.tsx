@@ -36,7 +36,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
       ? "bg-transparent border-transparent border-b-white/20 dark:border-b-white/10 focus-within:border-b-[var(--theme-primary)] hover:border-b-white/40 dark:hover:border-b-white/20"
       : searchStyle === "ghost"
         ? "bg-transparent border-transparent focus-within:bg-white/70 dark:focus-within:bg-slate-900/60 focus-within:border-[var(--theme-primary)]/50 dark:focus-within:border-[var(--theme-primary)]/20"
-        : "bg-white/0 dark:bg-slate-900/0 hover:bg-white/40 dark:hover:bg-slate-900/40 focus-within:bg-white/70 dark:focus-within:bg-slate-900/60 border-white/10 hover:border-white/30 dark:hover:border-white/10 focus-within:border-[var(--theme-primary)]/50 dark:focus-within:border-[var(--theme-primary)]/20";
+        : "bg-white/65 dark:bg-slate-900/65 hover:bg-white/80 dark:hover:bg-slate-900/75 focus-within:bg-white/90 dark:focus-within:bg-slate-900/80 border-white/50 hover:border-white/60 dark:border-white/15 dark:hover:border-white/25 focus-within:border-[var(--theme-primary)]/60 dark:focus-within:border-[var(--theme-primary)]/30";
 
   const borderRadiusClass = searchStyle === "underline" ? "rounded-none" : "rounded-2xl";
 
@@ -55,7 +55,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
   };
 
   const shadowClasses =
-    "shadow-none hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] focus-within:shadow-[0_0_20px_-5px_var(--theme-primary)]/10 dark:focus-within:shadow-[0_0_20px_-5px_var(--theme-primary)]/20";
+    "shadow-[0_4px_24px_rgba(0,0,0,0.12)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.16)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus-within:shadow-[0_0_20px_-5px_var(--theme-primary)]/30 dark:focus-within:shadow-[0_0_20px_-5px_var(--theme-primary)]/40";
 
   const textColor = "text-slate-800 dark:text-white";
   const placeholderColor =
