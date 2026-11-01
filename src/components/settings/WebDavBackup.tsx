@@ -54,16 +54,17 @@ function formatEntryTime(name: string): string {
 const InlineField: React.FC<{
   label: string;
   title?: string;
+  grow?: boolean;
   children: React.ReactNode;
-}> = ({ label, title, children }) => (
-  <div className="flex items-center gap-2 min-w-0">
+}> = ({ label, title, children, grow = true }) => (
+  <div className={`flex items-center gap-2 ${grow ? "flex-1 min-w-0" : ""}`}>
     <span
       className="text-[10px] font-bold text-secondary uppercase tracking-wider shrink-0 whitespace-nowrap"
       title={title}
     >
       {label}
     </span>
-    <div className="flex-1 min-w-0">{children}</div>
+    <div className={grow ? "flex-1 min-w-0" : "min-w-0"}>{children}</div>
   </div>
 );
 
@@ -221,7 +222,7 @@ export const WebDavBackup: React.FC = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <InlineField label={t("webdav_url")}>
             <input
               type="text"
@@ -257,27 +258,27 @@ export const WebDavBackup: React.FC = () => {
               className={field}
             />
           </InlineField>
-          <InlineField label={t("webdav_schedule")}>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <InlineField label={t("webdav_schedule")} grow={false}>
             <input
               type="time"
               value={cfg.scheduleTime}
               onChange={(e) => patchActive({ scheduleTime: e.target.value })}
-              className={field}
+              className="input-primary py-2 px-3 text-[11px] w-28"
             />
           </InlineField>
-          <InlineField label={t("webdav_retention")}>
+          <InlineField label={t("webdav_retention")} grow={false}>
             <input
               type="number"
               min={1}
               max={50}
               value={cfg.retention}
               onChange={(e) => patchActive({ retention: Number(e.target.value) })}
-              className={field}
+              className="input-primary py-2 px-3 text-[11px] w-16"
             />
           </InlineField>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-2 text-[11px] font-bold text-secondary cursor-pointer select-none">
             <input
               type="checkbox"
