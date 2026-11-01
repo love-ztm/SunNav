@@ -179,10 +179,10 @@ const App: React.FC = () => {
       />
 
       <div
-        className="container mx-auto px-4 3xl:px-8 flex-1 flex flex-col items-center pt-20 md:pt-12 3xl:pt-16 4xl:pt-20 relative z-[10]"
+        className="container mx-auto px-4 3xl:px-8 flex-1 flex flex-col items-center pt-24 md:pt-16 3xl:pt-20 4xl:pt-24 relative z-[10]"
         style={{ maxWidth: `${scaledMaxContainerWidth}px` }}
       >
-        <section className="w-full mb-14 3xl:mb-20 4xl:mb-24 animate-fade-in-down relative z-[70] isolation-isolate">
+        <section className="w-full mb-10 3xl:mb-12 4xl:mb-16 animate-fade-in-down relative z-[70] isolation-isolate">
           <SearchBar
             themeMode={themeMode}
             faviconApi={faviconApi}
@@ -199,7 +199,7 @@ const App: React.FC = () => {
                 className="flex items-center"
                 style={{
                   gap: "16px",
-                  marginBottom: "24px",
+                  marginBottom: "16px",
                 }}
               >
                 <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-slate-400/30 dark:to-white/20" />
