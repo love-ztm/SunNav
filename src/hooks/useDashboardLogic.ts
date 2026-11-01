@@ -29,7 +29,6 @@ export const useDashboardLogic = () => {
   }, [isMutating]);
 
   const rawCategories = useMemo(() => data?.categories ?? [], [data?.categories]);
-  const background = data?.background ?? "";
   const prefs = data?.prefs ?? DEFAULT_PREFS;
   const isDefaultCode = data?.isDefaultCode ?? false;
 
@@ -37,6 +36,11 @@ export const useDashboardLogic = () => {
   // "auto" is decoded here; consumers compare concrete themes.
   const prefersDark = usePrefersDark();
   const themeMode = resolveThemeMode(prefs.themeMode, prefersDark);
+  // Dark mode can point at its own wallpaper; fall back to the shared one.
+  const background =
+    themeMode === ThemeMode.Dark && prefs.backgroundDark
+      ? prefs.backgroundDark
+      : data?.background ?? "";
   const themeModePreference = prefs.themeMode ?? ThemeMode.Auto;
   const themeColorAuto = prefs.themeColorAuto ?? true;
   const maxContainerWidth = prefs.maxContainerWidth ?? DEFAULT_LAYOUT.maxContainerWidth;

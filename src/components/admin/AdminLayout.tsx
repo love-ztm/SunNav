@@ -39,9 +39,13 @@ export const AdminLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const { data } = useBootstrap();
   const prefersDark = usePrefersDark();
-  const background = data?.background ?? DEFAULT_BACKGROUND;
   const isDark =
     resolveThemeMode(data?.prefs.themeMode ?? DEFAULT_PREFS.themeMode, prefersDark) === "dark";
+  // Dark mode can point at its own wallpaper; fall back to the shared one.
+  const background =
+    isDark && data?.prefs.backgroundDark
+      ? data.prefs.backgroundDark
+      : data?.background ?? DEFAULT_BACKGROUND;
   const themeClass = isDark ? "theme-dark" : "theme-light";
 
   const handleLogout = async () => {

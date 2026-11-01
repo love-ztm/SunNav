@@ -8,6 +8,7 @@ import {
   Image as ImageIcon,
   Wallpaper,
   Sparkles,
+  Moon,
   Layers,
   Type,
 } from "../../utils/icons";
@@ -130,6 +131,7 @@ interface AppearanceTabProps {
 // names so the large JSX body below is untouched.
 interface AppearanceDraft {
   background: string;
+  backgroundDark: string;
   themeColor: string;
   themeColorAuto: boolean;
   cardOpacity: number;
@@ -159,6 +161,7 @@ type DraftKey = keyof AppearanceDraft;
 function draftFromPrefs(prefs: UserPreferences, background: string): AppearanceDraft {
   return {
     background,
+    backgroundDark: prefs.backgroundDark || "",
     themeColor: prefs.themeColor || DEFAULT_THEME_COLOR,
     themeColorAuto: prefs.themeColorAuto ?? true,
     cardOpacity: prefs.cardOpacity,
@@ -214,6 +217,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
   );
   const {
     background: bgInput,
+    backgroundDark: bgDarkInput,
     themeColor: themeColorInput,
     themeColorAuto: localAutoMode,
     cardOpacity: opacityInput,
@@ -239,6 +243,8 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
   } = draft;
 
   const setBgInput = (v: string) => dispatch({ type: "set", key: "background", value: v });
+  const setBgDarkInput = (v: string) =>
+    dispatch({ type: "set", key: "backgroundDark", value: v });
   const setThemeColorInput = (v: string) => dispatch({ type: "set", key: "themeColor", value: v });
   const setLocalAutoMode = (v: boolean) =>
     dispatch({ type: "set", key: "themeColorAuto", value: v });
@@ -311,6 +317,8 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
 
   const handleSave = () => {
     onUpdate(bgInput, {
+      ...prefs,
+      backgroundDark: bgDarkInput,
       cardOpacity: opacityInput,
       themeColor: themeColorInput,
       themeColorAuto: localAutoMode,
@@ -444,6 +452,34 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                   ) : (
                     <Wand2 size={s(16)} />
                   )}
+                </button>
+              </div>
+            </SettingsRow>
+
+            <SettingsRow label={t("bg_url_label_dark")}>
+              <div className="relative">
+                <Moon
+                  size={s(16)}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
+                />
+                <input
+                  type="text"
+                  value={bgDarkInput}
+                  onChange={(e) => setBgDarkInput(e.target.value)}
+                  placeholder={t("bg_url_placeholder")}
+                  className="input-primary pl-10 pr-10 font-mono text-[11px]"
+                />
+                <button
+                  onClick={() => setBgDarkInput(DAILY_BACKGROUND)}
+                  aria-pressed={isDailyBackground(bgDarkInput)}
+                  title={t("daily_wallpaper")}
+                  className={`absolute right-2.5 top-1/2 -translate-y-1/2 transition-colors ${
+                    isDailyBackground(bgDarkInput)
+                      ? "text-[var(--theme-primary)]"
+                      : "text-muted hover:text-secondary"
+                  }`}
+                >
+                  <Wallpaper size={s(16)} />
                 </button>
               </div>
             </SettingsRow>

@@ -58,6 +58,8 @@ export interface UserPreferences {
   iconScale?: number;
   /** Background image blur in px (0 = off). */
   bgBlur?: number;
+  /** Optional wallpaper used instead of `background` while in dark mode. */
+  backgroundDark?: string;
   gridColumns?: number;
   siteTitle?: string;
   faviconApi?: string;

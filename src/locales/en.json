@@ -50,6 +50,7 @@
   "background_settings": "Background",
   "background_desc": "Customize image, blur, and transparency.",
   "bg_url_label": "Image URL",
+  "bg_url_label_dark": "Dark Mode Image URL",
   "bg_url_placeholder": "https://example.com/image.jpg",
   "update_bg_btn": "Update",
   "reset_bg_btn": "Reset Default",

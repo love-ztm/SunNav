@@ -173,6 +173,20 @@ export function validatePreferences(data: unknown): ValidationResult {
     }
   }
 
+  // Optional dark-mode wallpaper; same rules as the shared background.
+  if (d.backgroundDark !== undefined && d.backgroundDark !== null && d.backgroundDark !== "") {
+    if (typeof d.backgroundDark !== "string" || d.backgroundDark.length > 1000) {
+      return { valid: false, message: "backgroundDark must be a string of 1000 characters or less" };
+    }
+    if ((d.backgroundDark as string).startsWith("http")) {
+      try {
+        new URL(d.backgroundDark as string);
+      } catch {
+        return { valid: false, message: "backgroundDark must be a valid URL" };
+      }
+    }
+  }
+
   // Background image blur in px.
   if (d.bgBlur !== undefined) {
     if (

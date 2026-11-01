@@ -50,6 +50,7 @@
   "background_settings": "背景设置",
   "background_desc": "自定义背景图片、模糊度和卡片透明度。",
   "bg_url_label": "图片 URL",
+  "bg_url_label_dark": "暗色模式图片 URL",
   "bg_url_placeholder": "https://example.com/image.jpg",
   "update_bg_btn": "更新设置",
   "reset_bg_btn": "恢复默认",
