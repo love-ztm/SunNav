@@ -18,8 +18,12 @@
           var color = dark ? "#0f172a" : "#fdf2f7";
           if (isCss && bg && bg.indexOf("gradient") !== -1) color = bg;
           var st = document.createElement("style");
+          // !important: the injected style lands in <head> BEFORE the main
+          // stylesheet link, which would otherwise win the cascade and keep
+          // the hardcoded dark body color.
           st.textContent =
-            "body{background-color:" + color + ";color:" + (dark ? "#fff" : "#0f172a") + "}";
+            "html{background-color:" + color + " !important}" +
+            "body{background-color:" + color + " !important;color:" + (dark ? "#fff" : "#0f172a") + " !important}";
           document.head.appendChild(st);
           document.documentElement.style.colorScheme = dark ? "dark" : "light";
           document.documentElement.classList.toggle("dark", dark);
