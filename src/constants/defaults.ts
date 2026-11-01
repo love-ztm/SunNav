@@ -18,7 +18,7 @@ export const FALLBACK_FAVICON_APIS = [
   "https://duckduckgo.com/ip2/{domain}.ico",
 ];
 export const DEFAULT_SITE_TITLE = "ModernNav";
-export const DEFAULT_FOOTER_GITHUB = "https://github.com/lyan0220";
+export const DEFAULT_FOOTER_GITHUB = "https://github.com/love-ztm";
 export const DEFAULT_FOOTER_LINKS = [{ title: "Friendly Links", url: "https://coyoo.ggff.net/" }];
 
 export const DEFAULT_SEARCH_ENGINES: SearchEngine[] = [

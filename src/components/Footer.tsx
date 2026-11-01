@@ -47,12 +47,12 @@ export const Footer: React.FC<FooterProps> = ({ github, links }) => {
           <span className="opacity-80">{t("powered_by")}</span>
         </p>
         <a
-          href="https://github.com/lyan0220/ModernNav"
+          href="https://github.com/love-ztm/SunNav"
           target="_blank"
           rel="noopener noreferrer"
           className="ml-1 font-semibold hover:text-[var(--theme-primary)] transition-colors"
         >
-          Lyan
+          Luoli
         </a>
       </div>
     </footer>
