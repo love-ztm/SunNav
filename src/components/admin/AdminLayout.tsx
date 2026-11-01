@@ -31,7 +31,7 @@ const NAV = [
 
 // Admin-only zoom: the panel's 10-12px type runs small on high-res screens,
 // so the whole admin surface is scaled up uniformly. Tweak to taste.
-const ADMIN_ZOOM = 1.2;
+const ADMIN_ZOOM = 1.3;
 
 export const AdminLayout: React.FC = () => {
   const { t } = useLanguage();
@@ -134,9 +134,9 @@ export const AdminLayout: React.FC = () => {
         </div>
       </header>
 
-      {/* ─── Page Content (centered, comfortable width) ─── */}
+      {/* ─── Page Content (wide, comfortable) ─── */}
       <main className="relative z-10 w-full">
-        <div className="max-w-5xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <Outlet />
         </div>
       </main>
