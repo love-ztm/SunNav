@@ -326,6 +326,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
       cardWidth: cardWidthInput,
       cardHeight: cardHeightInput,
       iconScale: iconScaleInput,
+      bgBlur: bgBlurInput,
       gridColumns: colsInput,
       animationLevel,
       animationSpeed,
