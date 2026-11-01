@@ -532,6 +532,58 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           </div>
         </SettingsSection>
 
+        {/* Global Tuning */}
+        <SettingsSection
+          icon={Type}
+          title={t("global_tuning")}
+          description={t("global_tuning_desc")}
+        >
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <RangeSlider
+                label={t("radius_scale")}
+                value={radiusScale}
+                min={0}
+                max={2}
+                step={0.1}
+                unit="x"
+                onChange={setRadiusScale}
+              />
+              <RangeSlider
+                label={t("density_scale")}
+                value={densityScale}
+                min={0.7}
+                max={1.5}
+                step={0.05}
+                unit="x"
+                onChange={setDensityScale}
+              />
+              <RangeSlider
+                label={t("font_size_scale")}
+                value={fontSize}
+                min={0.8}
+                max={1.3}
+                step={0.05}
+                unit="x"
+                onChange={setFontSize}
+              />
+            </div>
+            <SettingsRow label={t("font_weight")}>
+              <SegmentedControl options={fontWeights} value={fontWeight} onChange={setFontWeight} />
+            </SettingsRow>
+            <SettingsRow label={t("nav_style_label")}>
+              <SegmentedControl options={navStyles} value={navStyle} onChange={setNavStyle} />
+            </SettingsRow>
+            <SettingsRow label={t("search_style_label")}>
+              <SegmentedControl
+                options={searchStyles}
+                value={searchStyle}
+                onChange={setSearchStyle}
+              />
+            </SettingsRow>
+          </div>
+        </SettingsSection>
+
         {/* Layout */}
         <SettingsSection
           icon={Sliders}
@@ -629,57 +681,6 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           </div>
         </SettingsSection>
 
-        {/* Global Tuning */}
-        <SettingsSection
-          icon={Type}
-          title={t("global_tuning")}
-          description={t("global_tuning_desc")}
-        >
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <RangeSlider
-                label={t("radius_scale")}
-                value={radiusScale}
-                min={0}
-                max={2}
-                step={0.1}
-                unit="x"
-                onChange={setRadiusScale}
-              />
-              <RangeSlider
-                label={t("density_scale")}
-                value={densityScale}
-                min={0.7}
-                max={1.5}
-                step={0.05}
-                unit="x"
-                onChange={setDensityScale}
-              />
-              <RangeSlider
-                label={t("font_size_scale")}
-                value={fontSize}
-                min={0.8}
-                max={1.3}
-                step={0.05}
-                unit="x"
-                onChange={setFontSize}
-              />
-            </div>
-            <SettingsRow label={t("font_weight")}>
-              <SegmentedControl options={fontWeights} value={fontWeight} onChange={setFontWeight} />
-            </SettingsRow>
-            <SettingsRow label={t("nav_style_label")}>
-              <SegmentedControl options={navStyles} value={navStyle} onChange={setNavStyle} />
-            </SettingsRow>
-            <SettingsRow label={t("search_style_label")}>
-              <SegmentedControl
-                options={searchStyles}
-                value={searchStyle}
-                onChange={setSearchStyle}
-              />
-            </SettingsRow>
-          </div>
-        </SettingsSection>
         </div>
 
         <div className="h-14" />
