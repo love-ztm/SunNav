@@ -22,6 +22,7 @@
             "body{background-color:" + color + ";color:" + (dark ? "#fff" : "#0f172a") + "}";
           document.head.appendChild(st);
           document.documentElement.style.colorScheme = dark ? "dark" : "light";
+          document.documentElement.classList.toggle("dark", dark);
         } catch (e) {}
       })();
     </script>

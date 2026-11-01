@@ -37,8 +37,21 @@ export const AdminLayout: React.FC = () => {
   const queryClient = useQueryClient();
   const { data } = useBootstrap();
   const prefersDark = usePrefersDark();
+  // Bootstrap resolves async — fall back to the locally cached prefs so the
+  // panel does not paint dark first and flash when the real (light) prefs land.
+  const cachedThemeMode = (() => {
+    try {
+      return (JSON.parse(localStorage.getItem("sunNav_prefs") || "{}") as { themeMode?: string })
+        .themeMode;
+    } catch {
+      return undefined;
+    }
+  })();
   const isDark =
-    resolveThemeMode(data?.prefs.themeMode ?? DEFAULT_PREFS.themeMode, prefersDark) === "dark";
+    resolveThemeMode(
+      (data?.prefs.themeMode ?? cachedThemeMode ?? DEFAULT_PREFS.themeMode) as never,
+      prefersDark
+    ) === "dark";
   // Dark mode can point at its own wallpaper; fall back to the shared one.
   const background =
     isDark && data?.prefs.backgroundDark
