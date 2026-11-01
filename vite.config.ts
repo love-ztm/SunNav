@@ -15,7 +15,7 @@ export default defineConfig({
         name: "SunNav",
         short_name: "SunNav",
         description: "发现精彩网站，探索无限可能 | Discover great sites, explore without limits",
-        theme_color: "#6280a3",
+        theme_color: "#ec4899",
         background_color: "#ffffff",
         display: "standalone",
         icons: [
