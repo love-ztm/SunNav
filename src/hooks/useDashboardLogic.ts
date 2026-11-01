@@ -111,9 +111,13 @@ export const useDashboardLogic = () => {
   // to write state from inside an effect just to fix up an invalid id.
   const visibleCategory = categories.find((c) => c.id === activeCategory) ?? categories[0] ?? null;
   const effectiveActiveCategory = visibleCategory?.id ?? "";
+  // Default subcategory: the one sharing the category's name (the category's
+  // "own" items), falling back to the first one.
+  const defaultSubOf = (cat: typeof visibleCategory) =>
+    cat?.subCategories.find((s) => s.title === cat.title) ?? cat?.subCategories[0];
   const effectiveActiveSubCategoryId =
     visibleCategory?.subCategories.find((s) => s.id === activeSubCategoryId)?.id ??
-    visibleCategory?.subCategories[0]?.id ??
+    defaultSubOf(visibleCategory)?.id ??
     "";
 
   // --- Action handlers ---
@@ -135,7 +139,7 @@ export const useDashboardLogic = () => {
 
   const handleMainCategoryClick = (cat: Category) => {
     setActiveCategory(cat.id);
-    setActiveSubCategoryId(cat.subCategories[0]?.id ?? "");
+    setActiveSubCategoryId(defaultSubOf(cat)?.id ?? "");
   };
 
   const handleSubCategoryClick = (catId: string, subId: string) => {
