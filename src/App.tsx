@@ -79,7 +79,7 @@ const App: React.FC = () => {
   );
 
   useEffect(() => {
-    document.title = siteTitle || "ModernNav";
+    document.title = siteTitle || "SunNav";
   }, [siteTitle]);
 
   if (loading) {

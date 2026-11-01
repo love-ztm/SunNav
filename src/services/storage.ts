@@ -79,7 +79,7 @@ export const storageService = {
       "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
     const link = document.createElement("a");
     link.href = dataUri;
-    link.download = `modern-nav-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `sunnav-backup-${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
   },
 

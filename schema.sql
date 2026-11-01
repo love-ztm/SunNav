@@ -1,4 +1,4 @@
--- ModernNav D1 schema v3
+-- SunNav D1 schema v3
 -- 关系化设计：解决整段 JSON 覆盖与 100KB 上限。
 -- 旧 schema 仅 config(key,value)。bootstrap 启动时检测 schema_version 自动迁移。
 -- v3: categories.is_private（登录可见的私密分类）；存量库由 ensureSchema 自动补列。

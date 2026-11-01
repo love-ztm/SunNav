@@ -71,9 +71,9 @@ export const AdminLayout: React.FC = () => {
           {/* Left: Brand */}
           <div className="shrink-0 pr-5">
             <button onClick={() => navigate("/")} className="flex items-center gap-2.5 group">
-              <img src="/favicon.svg" alt="ModernNav" className="w-8 h-8" />
+              <img src="/favicon.svg" alt="SunNav" className="w-8 h-8" />
               <span className="text-lg font-semibold tracking-tight text-secondary group-hover:text-[var(--theme-primary)] transition-colors">
-                ModernNav
+                SunNav
               </span>
             </button>
           </div>

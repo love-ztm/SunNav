@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg"],
       manifest: {
-        name: "ModernNav — 现代导航 | Modern Navigation",
-        short_name: "ModernNav",
+        name: "SunNav",
+        short_name: "SunNav",
         description: "发现精彩网站，探索无限可能 | Discover great sites, explore without limits",
         theme_color: "#6280a3",
         background_color: "#ffffff",

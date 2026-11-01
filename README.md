@@ -1,4 +1,4 @@
-# ModernNav
+# SunNav
 
 个人导航仪表盘，玻璃拟态风格。基于 React + Tailwind CSS + Cloudflare Pages (Functions + D1)。
 

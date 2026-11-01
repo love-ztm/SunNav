@@ -52,7 +52,7 @@ export const onRequestGet = async ({ request, env }: { request: Request; env: En
 
         const hopResponse = await fetch(hopUrl.toString(), {
           signal: controller.signal,
-          headers: { "User-Agent": "ModernNav/1.0" },
+          headers: { "User-Agent": "SunNav/1.0" },
           redirect: "manual",
         });
 

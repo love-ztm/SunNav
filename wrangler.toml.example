@@ -7,7 +7,7 @@
 #
 # wrangler.toml itself is gitignored because it contains your real database id.
 
-name = "modernnav"
+name = "sunnav"
 compatibility_date = "2024-01-01"
 
 [[d1_databases]]

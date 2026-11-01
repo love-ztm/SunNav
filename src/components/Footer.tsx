@@ -42,7 +42,7 @@ export const Footer: React.FC<FooterProps> = ({ github, links }) => {
       </div>
       <div className="flex items-center shrink-0">
         <p>
-          {t("copyright")} © {new Date().getFullYear()} ModernNav
+          {t("copyright")} © {new Date().getFullYear()} SunNav
           <span className="mx-2 opacity-50">|</span>
           <span className="opacity-80">{t("powered_by")}</span>
         </p>

@@ -38,7 +38,7 @@ async function fetchFromBing(): Promise<WallpaperPayload | null> {
   try {
     const res = await fetch(apiUrl.toString(), {
       signal: controller.signal,
-      headers: { "User-Agent": "ModernNav/1.0" },
+      headers: { "User-Agent": "SunNav/1.0" },
     });
     if (!res.ok) return null;
     const data = (await res.json()) as {

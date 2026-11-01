@@ -1,4 +1,4 @@
-# ModernNav
+# SunNav
 
 A personal navigation dashboard with a glassmorphism aesthetic. Built with React + Tailwind CSS + Cloudflare Pages (Functions + D1).
 
