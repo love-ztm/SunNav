@@ -16,7 +16,7 @@ export const SettingsContainer: React.FC<{
   style?: React.CSSProperties;
 }> = ({ children, className = "", style }) => (
   <div className="w-full h-full overflow-y-auto custom-scrollbar animate-fade-in" style={style}>
-    <div className={`w-full max-w-5xl mx-auto px-6 py-6 space-y-4 ${className}`}>{children}</div>
+    <div className={`w-full max-w-5xl mx-auto px-6 py-4 space-y-3 ${className}`}>{children}</div>
   </div>
 );
 
@@ -32,7 +32,7 @@ export const SettingsSection: React.FC<{
   <section
     className={`surface-elevated border border-default rounded-2xl overflow-hidden ${className}`}
   >
-    <div className="flex items-start justify-between gap-4 px-4 pt-4">
+    <div className="flex items-start justify-between gap-4 px-4 pt-3">
       <div className="flex items-center gap-3 min-w-0">
         <div className="shrink-0 w-9 h-9 rounded-xl bg-[var(--theme-primary)]/10 text-[var(--theme-primary)] flex items-center justify-center">
           <Icon size={17} />
@@ -46,7 +46,7 @@ export const SettingsSection: React.FC<{
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </div>
-    <div className="p-4">{children}</div>
+    <div className="p-4 pt-3">{children}</div>
   </section>
 );
 

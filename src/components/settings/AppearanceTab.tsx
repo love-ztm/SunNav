@@ -400,6 +400,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           description={t("glass_quality_desc")}
         >
           <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3 items-end">
             <SettingsRow label={t("bg_url_label")}>
               <div className="relative">
                 <ImageIcon
@@ -424,34 +425,6 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                   }`}
                 >
                   <Wallpaper size={s(16)} />
-                </button>
-              </div>
-            </SettingsRow>
-
-            <SettingsRow label={t("label_theme_color")}>
-              <div className="flex items-center gap-2">
-                <label className="flex flex-1 items-center gap-2 surface-hover rounded-lg p-1.5 border border-muted cursor-pointer hover:surface-active transition-colors">
-                  <input
-                    type="color"
-                    value={themeColorInput}
-                    onChange={handleColorPick}
-                    className="w-6 h-6 rounded cursor-pointer bg-transparent p-0 border-0 shrink-0"
-                  />
-                  <span className="text-[10px] font-mono text-secondary uppercase flex-1 text-right pr-1">
-                    {themeColorInput}
-                  </span>
-                </label>
-                <button
-                  onClick={handleAutoExtract}
-                  disabled={isExtracting}
-                  className="btn-secondary h-9 px-4 rounded-lg disabled:opacity-50"
-                  title={t("btn_auto_extract")}
-                >
-                  {isExtracting ? (
-                    <Loader2 size={s(16)} className="animate-spin" />
-                  ) : (
-                    <Wand2 size={s(16)} />
-                  )}
                 </button>
               </div>
             </SettingsRow>
@@ -484,7 +457,36 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
               </div>
             </SettingsRow>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <SettingsRow label={t("label_theme_color")}>
+              <div className="flex items-center gap-2">
+                <label
+                  className="surface-hover rounded-lg p-1 border border-muted cursor-pointer hover:surface-active transition-colors"
+                  title={themeColorInput}
+                >
+                  <input
+                    type="color"
+                    value={themeColorInput}
+                    onChange={handleColorPick}
+                    className="w-9 h-7 rounded cursor-pointer bg-transparent p-0 border-0 block"
+                  />
+                </label>
+                <button
+                  onClick={handleAutoExtract}
+                  disabled={isExtracting}
+                  className="btn-secondary h-9 px-3 rounded-lg disabled:opacity-50"
+                  title={t("btn_auto_extract")}
+                >
+                  {isExtracting ? (
+                    <Loader2 size={s(16)} className="animate-spin" />
+                  ) : (
+                    <Wand2 size={s(16)} />
+                  )}
+                </button>
+              </div>
+            </SettingsRow>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <RangeSlider
               label={t("label_blur")}
               value={bgBlurInput}
@@ -539,7 +541,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           description={t("global_tuning_desc")}
         >
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <RangeSlider
                 label={t("radius_scale")}
                 value={radiusScale}
@@ -590,7 +592,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           title={t("precision_controls")}
           description={t("geometry_layout")}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <RangeSlider
               label={t("canvas_width")}
               value={widthInput}
@@ -658,7 +660,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
               value={animationLevel}
               onChange={setAnimationLevel}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <RangeSlider
                 label={t("anim_speed")}
                 value={animationSpeed}
