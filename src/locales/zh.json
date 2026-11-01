@@ -64,7 +64,7 @@
   "precision_controls": "自定义设置",
   "geometry_layout": "卡片规格与布局",
   "canvas_width": "画布宽度",
-  "grid_cols": "网格列数",
+  "grid_cols": "每行卡片数",
   "card_width": "卡片宽度",
   "card_height": "卡片高度",
   "icon_scale": "图标大小",

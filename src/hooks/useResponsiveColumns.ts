@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 
 /**
- * Calculates the effective number of columns based on window width,
- * but restricted by the user's preferred maximum columns.
- * Result is always Math.min(breakpointColumns, maxColumns)
+ * Number of cards rendered per row.
+ *
+ * The admin "cards per row" setting (maxColumns) is authoritative on
+ * tablet/desktop viewports (>= 768px): the grid renders exactly that many
+ * columns and the cards stretch (grid minmax(0, 1fr)). Only on narrow phone
+ * screens is the count clamped to what physically fits, so cards stay usable.
  */
 export const useResponsiveColumns = (
   maxColumns: number,
-  maxContainerWidth: number,
+  _maxContainerWidth: number,
   targetCardWidth: number
 ) => {
   const [effectiveColumns, setEffectiveColumns] = useState(maxColumns);
@@ -15,25 +18,20 @@ export const useResponsiveColumns = (
   useEffect(() => {
     const handleResize = () => {
       const windowWidth = window.innerWidth;
-      // Calculate the actual width of the container
-      // Container has px-4 (16px * 2 = 32px) padding
-      const containerPadding = 32;
-      const availableWidth = Math.min(windowWidth, maxContainerWidth) - containerPadding;
 
-      // Determine minimum width needed for a column (card + gap)
-      // We use the user's preferred card width + 16px gap.
-      // Default fallback to 124 if not provided (though it should be).
+      if (windowWidth >= 768) {
+        setEffectiveColumns(maxColumns);
+        return;
+      }
+
+      // Narrow screens: fit as many columns as the card width allows (min 2).
+      const containerPadding = 32;
       const gap = 16;
       const effectiveCardWidth = targetCardWidth || 124;
       const minColumnWidth = effectiveCardWidth + gap;
-
-      let targetCoords = Math.floor(availableWidth / minColumnWidth);
-
-      // Enforce reasonable bounds
-      if (targetCoords < 2) targetCoords = 2;
-
-      // The logic: Effective = Min(UserSetting, ScreenCapacity)
-      setEffectiveColumns(Math.min(targetCoords, maxColumns));
+      let fit = Math.floor((windowWidth - containerPadding) / minColumnWidth);
+      if (fit < 2) fit = 2;
+      setEffectiveColumns(Math.min(fit, maxColumns));
     };
 
     // Initial calculation
@@ -41,7 +39,7 @@ export const useResponsiveColumns = (
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [maxColumns, maxContainerWidth, targetCardWidth]);
+  }, [maxColumns, targetCardWidth]);
 
   return effectiveColumns;
 };

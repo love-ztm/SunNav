@@ -64,7 +64,7 @@
   "precision_controls": "Custom Settings",
   "geometry_layout": "Card specifications and layout",
   "canvas_width": "Canvas Width",
-  "grid_cols": "Grid Columns",
+  "grid_cols": "Cards per Row",
   "card_width": "Card Width",
   "card_height": "Card Height",
   "icon_scale": "Icon Size",
