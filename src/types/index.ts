@@ -56,6 +56,8 @@ export interface UserPreferences {
   cardHeight?: number;
   /** Link card icon size as a percentage of card height (20-60). */
   iconScale?: number;
+  /** Background image blur in px (0 = off). */
+  bgBlur?: number;
   gridColumns?: number;
   siteTitle?: string;
   faviconApi?: string;

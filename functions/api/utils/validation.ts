@@ -173,6 +173,18 @@ export function validatePreferences(data: unknown): ValidationResult {
     }
   }
 
+  // Background image blur in px.
+  if (d.bgBlur !== undefined) {
+    if (
+      typeof d.bgBlur !== "number" ||
+      !Number.isFinite(d.bgBlur) ||
+      d.bgBlur < 0 ||
+      d.bgBlur > 100
+    ) {
+      return { valid: false, message: "bgBlur must be a number between 0 and 100" };
+    }
+  }
+
   const shortStrFields = ["siteTitle", "faviconApi", "footerGithub"] as const;
   for (const field of shortStrFields) {
     const value = d[field];

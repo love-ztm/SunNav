@@ -57,7 +57,7 @@ export const AdminLayout: React.FC = () => {
       className={`${themeClass} min-h-screen relative text-primary`}
       style={{ zoom: ADMIN_ZOOM }}
     >
-      <BackgroundLayer background={background} />
+      <BackgroundLayer background={background} bgBlur={data?.prefs.bgBlur ?? 0} />
       <div
         className="fixed inset-0 z-0 pointer-events-none bg-white/20 dark:bg-slate-900/40"
         style={{

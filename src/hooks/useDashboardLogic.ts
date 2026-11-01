@@ -43,6 +43,7 @@ export const useDashboardLogic = () => {
   const cardWidth = prefs.cardWidth ?? DEFAULT_LAYOUT.cardWidth;
   const cardHeight = prefs.cardHeight ?? DEFAULT_LAYOUT.cardHeight;
   const iconScale = prefs.iconScale ?? 32;
+  const bgBlur = prefs.bgBlur ?? 0;
   const gridColumns = prefs.gridColumns ?? DEFAULT_LAYOUT.gridColumns;
   const siteTitle = prefs.siteTitle ?? DEFAULT_SITE_TITLE;
   const faviconApi = prefs.faviconApi ?? DEFAULT_FAVICON_API;
@@ -163,6 +164,7 @@ export const useDashboardLogic = () => {
       cardWidth,
       cardHeight,
       iconScale,
+      bgBlur,
       gridColumns,
       siteTitle,
       faviconApi,

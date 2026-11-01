@@ -137,6 +137,7 @@ interface AppearanceDraft {
   cardWidth: number;
   cardHeight: number;
   iconScale: number;
+  bgBlur: number;
   gridColumns: number;
   animationLevel: AnimationLevel;
   animationSpeed: number;
@@ -165,6 +166,7 @@ function draftFromPrefs(prefs: UserPreferences, background: string): AppearanceD
     cardWidth: prefs.cardWidth ?? DEFAULT_LAYOUT_UI.cardWidth,
     cardHeight: prefs.cardHeight ?? DEFAULT_LAYOUT_UI.cardHeight,
     iconScale: prefs.iconScale ?? 32,
+    bgBlur: prefs.bgBlur ?? 0,
     gridColumns: prefs.gridColumns ?? DEFAULT_LAYOUT_UI.cols,
     animationLevel: prefs.animationLevel ?? DEFAULT_ANIMATION_LEVEL,
     animationSpeed: prefs.animationSpeed ?? DEFAULT_ANIMATION_SPEED,
@@ -219,6 +221,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
     cardWidth: cardWidthInput,
     cardHeight: cardHeightInput,
     iconScale: iconScaleInput,
+    bgBlur: bgBlurInput,
     gridColumns: colsInput,
     animationLevel,
     animationSpeed,
@@ -245,6 +248,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
   const setCardWidthInput = (v: number) => dispatch({ type: "set", key: "cardWidth", value: v });
   const setCardHeightInput = (v: number) => dispatch({ type: "set", key: "cardHeight", value: v });
   const setIconScaleInput = (v: number) => dispatch({ type: "set", key: "iconScale", value: v });
+  const setBgBlurInput = (v: number) => dispatch({ type: "set", key: "bgBlur", value: v });
   const setColsInput = (v: number) => dispatch({ type: "set", key: "gridColumns", value: v });
   const setAnimationLevel = (v: AnimationLevel) =>
     dispatch({ type: "set", key: "animationLevel", value: v });
@@ -445,6 +449,15 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
             </SettingsRow>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <RangeSlider
+              label={t("label_blur")}
+              value={bgBlurInput}
+              min={0}
+              max={40}
+              step={1}
+              unit="px"
+              onChange={setBgBlurInput}
+            />
             <RangeSlider
               label={t("glass_blur")}
               value={glassBlur}

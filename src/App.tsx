@@ -29,6 +29,7 @@ const App: React.FC = () => {
     cardWidth,
     cardHeight,
     iconScale,
+    bgBlur,
     gridColumns,
     siteTitle,
     faviconApi,
@@ -88,7 +89,7 @@ const App: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen relative flex flex-col items-center pt-8 md:pt-12 px-4 bg-slate-50 dark:bg-slate-900">
-        <BackgroundLayer background={background} />
+        <BackgroundLayer background={background} bgBlur={bgBlur} />
         <div className="w-full max-w-[1000px] relative z-10">
           <SkeletonLoader
             cardOpacity={cardOpacity}
@@ -118,7 +119,7 @@ const App: React.FC = () => {
         }
       `}</style>
 
-      <BackgroundLayer background={background} />
+      <BackgroundLayer background={background} bgBlur={bgBlur} />
 
       <CategoryNav
         categories={categories}
