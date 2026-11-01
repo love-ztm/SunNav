@@ -2,8 +2,6 @@
 
 粉色玻璃拟态风格的个人导航仪表盘。基于开源项目 [ModernNav](https://github.com/lyan0220/ModernNav)（原作者 [Lyan](https://github.com/lyan0220)）二次开发，前端 React + Tailwind CSS，后端 Cloudflare Pages Functions + D1，全部跑在 Cloudflare 免费套餐上。
 
-线上示例：**https://nav.ww.fyi**
-
 [English](README_en.md) | 中文
 
 ## 功能

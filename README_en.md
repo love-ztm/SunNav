@@ -2,8 +2,6 @@
 
 A personal navigation dashboard with a pink glassmorphism aesthetic. Based on the open-source project [ModernNav](https://github.com/lyan0220/ModernNav) by the original author [Lyan](https://github.com/lyan0220), built with React + Tailwind CSS on the frontend and Cloudflare Pages Functions + D1 on the backend — entirely on the Cloudflare free tier.
 
-Live demo: **https://nav.ww.fyi**
-
 [中文](README.md) | English
 
 ## Features
