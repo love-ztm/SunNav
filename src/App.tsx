@@ -28,6 +28,7 @@ const App: React.FC = () => {
     maxContainerWidth,
     cardWidth,
     cardHeight,
+    iconScale,
     gridColumns,
     siteTitle,
     faviconApi,
@@ -190,6 +191,7 @@ const App: React.FC = () => {
                     themeMode={themeMode}
                     viewportScale={viewportScale}
                     scaledCardHeight={scaledCardHeight}
+                    iconScale={iconScale}
                     faviconApi={faviconApi}
                     onVisit={handleVisit}
                   />

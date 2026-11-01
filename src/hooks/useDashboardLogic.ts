@@ -42,6 +42,7 @@ export const useDashboardLogic = () => {
   const maxContainerWidth = prefs.maxContainerWidth ?? DEFAULT_LAYOUT.maxContainerWidth;
   const cardWidth = prefs.cardWidth ?? DEFAULT_LAYOUT.cardWidth;
   const cardHeight = prefs.cardHeight ?? DEFAULT_LAYOUT.cardHeight;
+  const iconScale = prefs.iconScale ?? 32;
   const gridColumns = prefs.gridColumns ?? DEFAULT_LAYOUT.gridColumns;
   const siteTitle = prefs.siteTitle ?? DEFAULT_SITE_TITLE;
   const faviconApi = prefs.faviconApi ?? DEFAULT_FAVICON_API;
@@ -161,6 +162,7 @@ export const useDashboardLogic = () => {
       maxContainerWidth,
       cardWidth,
       cardHeight,
+      iconScale,
       gridColumns,
       siteTitle,
       faviconApi,

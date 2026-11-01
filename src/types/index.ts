@@ -54,6 +54,8 @@ export interface UserPreferences {
   maxContainerWidth?: number;
   cardWidth?: number;
   cardHeight?: number;
+  /** Link card icon size as a percentage of card height (20-60). */
+  iconScale?: number;
   gridColumns?: number;
   siteTitle?: string;
   faviconApi?: string;

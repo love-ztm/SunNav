@@ -161,6 +161,18 @@ export function validatePreferences(data: unknown): ValidationResult {
     }
   }
 
+  // Icon size as a percentage of card height.
+  if (d.iconScale !== undefined) {
+    if (
+      typeof d.iconScale !== "number" ||
+      !Number.isFinite(d.iconScale) ||
+      d.iconScale < 10 ||
+      d.iconScale > 80
+    ) {
+      return { valid: false, message: "iconScale must be a number between 10 and 80" };
+    }
+  }
+
   const shortStrFields = ["siteTitle", "faviconApi", "footerGithub"] as const;
   for (const field of shortStrFields) {
     const value = d[field];

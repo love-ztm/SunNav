@@ -11,6 +11,8 @@ interface LinkCardProps {
   themeMode: ResolvedTheme;
   viewportScale: number;
   scaledCardHeight: number;
+  /** Icon size as a percentage of card height (see UserPreferences.iconScale). */
+  iconScale?: number;
   faviconApi?: string;
   onVisit: (linkId: string) => void;
 }
@@ -24,13 +26,17 @@ function LinkCardComponent({
   themeMode,
   viewportScale,
   scaledCardHeight,
+  iconScale,
   faviconApi,
   onVisit,
 }: LinkCardProps) {
   const iconSource = link.icon || getFaviconUrl(link.url, faviconApi);
-  // Icon scales with the card height (32%, clamped 28-56px) so larger cards
-  // don't look empty; scaledCardHeight already includes the viewport scale.
-  const scaledIconSize = Math.min(56, Math.max(28, Math.round(scaledCardHeight * 0.32)));
+  // Icon scales with the card height (default 32%, clamped 20-72px) so larger
+  // cards don't look empty; scaledCardHeight already includes the viewport.
+  const scaledIconSize = Math.min(
+    72,
+    Math.max(20, Math.round((scaledCardHeight * (iconScale ?? 32)) / 100))
+  );
   const scaledTitleSize = Math.max(12, Math.round(12 * viewportScale));
 
   return (

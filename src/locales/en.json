@@ -67,6 +67,7 @@
   "grid_cols": "Grid Columns",
   "card_width": "Card Width",
   "card_height": "Card Height",
+  "icon_scale": "Icon Size",
   "surface_opacity": "Surface Opacity",
   "visual_identity": "Visual Identity",
   "sidebar_categories": "Categories",

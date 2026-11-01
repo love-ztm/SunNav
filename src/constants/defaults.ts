@@ -69,6 +69,7 @@ export const DEFAULT_PREFS: UserPreferences = {
   themeColor: DEFAULT_THEME_COLOR,
   themeMode: ThemeMode.Dark,
   themeColorAuto: true,
+  iconScale: 32,
   faviconApi: DEFAULT_FAVICON_API,
   siteTitle: DEFAULT_SITE_TITLE,
   footerGithub: DEFAULT_FOOTER_GITHUB,

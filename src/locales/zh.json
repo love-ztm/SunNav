@@ -67,6 +67,7 @@
   "grid_cols": "网格列数",
   "card_width": "卡片宽度",
   "card_height": "卡片高度",
+  "icon_scale": "图标大小",
   "surface_opacity": "卡片表面透明度",
   "visual_identity": "视觉识别",
   "sidebar_categories": "分类列表",

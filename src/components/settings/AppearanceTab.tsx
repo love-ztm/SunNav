@@ -137,6 +137,7 @@ interface AppearanceDraft {
   maxContainerWidth: number;
   cardWidth: number;
   cardHeight: number;
+  iconScale: number;
   gridColumns: number;
   animationLevel: AnimationLevel;
   animationSpeed: number;
@@ -164,6 +165,7 @@ function draftFromPrefs(prefs: UserPreferences, background: string): AppearanceD
     maxContainerWidth: prefs.maxContainerWidth ?? DEFAULT_LAYOUT_UI.width,
     cardWidth: prefs.cardWidth ?? DEFAULT_LAYOUT_UI.cardWidth,
     cardHeight: prefs.cardHeight ?? DEFAULT_LAYOUT_UI.cardHeight,
+    iconScale: prefs.iconScale ?? 32,
     gridColumns: prefs.gridColumns ?? DEFAULT_LAYOUT_UI.cols,
     animationLevel: prefs.animationLevel ?? DEFAULT_ANIMATION_LEVEL,
     animationSpeed: prefs.animationSpeed ?? DEFAULT_ANIMATION_SPEED,
@@ -217,6 +219,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
     maxContainerWidth: widthInput,
     cardWidth: cardWidthInput,
     cardHeight: cardHeightInput,
+    iconScale: iconScaleInput,
     gridColumns: colsInput,
     animationLevel,
     animationSpeed,
@@ -242,6 +245,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
     dispatch({ type: "set", key: "maxContainerWidth", value: v });
   const setCardWidthInput = (v: number) => dispatch({ type: "set", key: "cardWidth", value: v });
   const setCardHeightInput = (v: number) => dispatch({ type: "set", key: "cardHeight", value: v });
+  const setIconScaleInput = (v: number) => dispatch({ type: "set", key: "iconScale", value: v });
   const setColsInput = (v: number) => dispatch({ type: "set", key: "gridColumns", value: v });
   const setAnimationLevel = (v: AnimationLevel) =>
     dispatch({ type: "set", key: "animationLevel", value: v });
@@ -311,6 +315,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
       maxContainerWidth: widthInput,
       cardWidth: cardWidthInput,
       cardHeight: cardHeightInput,
+      iconScale: iconScaleInput,
       gridColumns: colsInput,
       animationLevel,
       animationSpeed,
@@ -560,6 +565,15 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
               step={4}
               unit="px"
               onChange={setCardHeightInput}
+            />
+            <RangeSlider
+              label={t("icon_scale")}
+              value={iconScaleInput}
+              min={20}
+              max={60}
+              step={2}
+              unit="%"
+              onChange={setIconScaleInput}
             />
             <RangeSlider
               label={t("surface_opacity")}
