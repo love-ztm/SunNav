@@ -29,6 +29,10 @@ const NAV = [
   { to: "/admin/security", labelKey: "tab_security", Icon: ShieldCheck },
 ] as const;
 
+// Admin-only zoom: the panel's 10-12px type runs small on high-res screens,
+// so the whole admin surface is scaled up uniformly. Tweak to taste.
+const ADMIN_ZOOM = 1.2;
+
 export const AdminLayout: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -49,7 +53,10 @@ export const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className={`${themeClass} min-h-screen relative text-primary`}>
+    <div
+      className={`${themeClass} min-h-screen relative text-primary`}
+      style={{ zoom: ADMIN_ZOOM }}
+    >
       <BackgroundLayer background={background} />
       <div
         className="fixed inset-0 z-0 pointer-events-none bg-white/20 dark:bg-slate-900/40"
