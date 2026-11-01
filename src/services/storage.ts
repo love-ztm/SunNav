@@ -2,6 +2,7 @@ import { Category, UserPreferences, BootstrapResponse } from "../types";
 import { INITIAL_CATEGORIES } from "../constants";
 import { DEFAULT_PREFS, DEFAULT_BACKGROUND } from "../constants/defaults";
 import { apiClient } from "./apiClient";
+import { ApiError } from "../types/errors";
 import { handleApiError } from "../utils/errorHandler";
 import { LS_KEYS, readLS } from "./queries";
 import { subscribeNotifications, notify } from "./notifications";
@@ -41,15 +42,27 @@ export const storageService = {
   login: async (code: string): Promise<boolean> => apiClient.login(code),
   logout: async () => apiClient.logout(),
   isAuthenticated: async (): Promise<boolean> => apiClient.isAuthenticated(),
-  updateAccessCode: async (currentCode: string, newCode: string): Promise<boolean> => {
+  // Returns null on success, or an i18n key describing the real failure so the
+  // UI can distinguish a wrong code from rate limiting and session expiry.
+  updateAccessCode: async (currentCode: string, newCode: string): Promise<string | null> => {
     try {
       await apiClient.request("/api/auth", {
         method: "POST",
         body: JSON.stringify({ action: "update", currentCode, newCode }),
       });
-      return true;
-    } catch {
-      return false;
+      return null;
+    } catch (err) {
+      if (err instanceof ApiError) {
+        const SERVER_ERROR_KEYS: Record<string, string> = {
+          "Invalid credentials": "current_code_err",
+          "Too many requests, please try again later": "rate_limited_err",
+          "Unauthorized: Session expired": "session_expired_err",
+          "Unauthorized access": "session_expired_err",
+          "Invalid or expired token": "session_expired_err",
+        };
+        return SERVER_ERROR_KEYS[err.message] ?? "update_code_failed";
+      }
+      return "update_code_failed";
     }
   },
 

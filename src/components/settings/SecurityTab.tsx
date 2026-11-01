@@ -36,13 +36,14 @@ export const SecurityTab: React.FC = () => {
       return;
     }
 
-    const success = await storageService.updateAccessCode(passwordForm.current, passwordForm.new);
+    // Returns null on success, or an i18n key describing the actual failure.
+    const errorKey = await storageService.updateAccessCode(passwordForm.current, passwordForm.new);
 
-    if (success) {
+    if (errorKey === null) {
       setPasswordStatus({ type: "success", message: t("code_updated") });
       setPasswordForm({ current: "", new: "", confirm: "" });
     } else {
-      setPasswordStatus({ type: "error", message: t("current_code_err") });
+      setPasswordStatus({ type: "error", message: t(errorKey) });
     }
     setTimeout(() => setPasswordStatus({ type: null, message: "" }), 4000);
   };
