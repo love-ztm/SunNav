@@ -383,7 +383,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
       <SettingsContainer style={previewStyles}>
         {/* Background + Theme Color Preview */}
         <section className="surface-elevated border border-default rounded-2xl overflow-hidden sticky top-0 z-10">
-          <div className="h-40 relative overflow-hidden group">
+            <div className="h-32 relative overflow-hidden group">
             {previewBackground.startsWith("http") || previewBackground.startsWith("data:") ? (
               <img
                 src={previewBackground}
@@ -421,7 +421,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
             </div>
           </div>
 
-          <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
             <SettingsRow label={t("bg_url_label")}>
               <div className="relative">
                 <ImageIcon
@@ -480,13 +480,15 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           </div>
         </section>
 
+        {/* Compact two-column layout: halves the page length on wide screens. */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
         {/* Glass Quality */}
         <SettingsSection
           icon={Layers}
           title={t("glass_quality")}
           description={t("glass_quality_desc")}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <RangeSlider
               label={t("glass_blur")}
               value={glassBlur}
@@ -530,7 +532,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           title={t("precision_controls")}
           description={t("geometry_layout")}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <RangeSlider
               label={t("canvas_width")}
               value={widthInput}
@@ -598,7 +600,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
               value={animationLevel}
               onChange={setAnimationLevel}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <RangeSlider
                 label={t("anim_speed")}
                 value={animationSpeed}
@@ -628,7 +630,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           description={t("global_tuning_desc")}
         >
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <RangeSlider
                 label={t("radius_scale")}
                 value={radiusScale}
@@ -672,6 +674,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
             </SettingsRow>
           </div>
         </SettingsSection>
+        </div>
 
         <div className="h-14" />
       </SettingsContainer>
