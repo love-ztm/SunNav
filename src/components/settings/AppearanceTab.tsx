@@ -33,7 +33,6 @@ import {
 } from "../../constants/defaults";
 import { getDominantColor, themeAccentVars } from "../../utils/color";
 import { DAILY_BACKGROUND, isDailyBackground } from "../../utils/background";
-import { useResolvedBackground } from "../../hooks/useResolvedBackground";
 import { useViewportScale } from "../../hooks/useViewportScale";
 import { getIconSize } from "../../utils/favicon";
 import { SettingsContainer, SettingsSection, SettingsRow } from "./SettingsPrimitives";
@@ -292,7 +291,6 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
     window.addEventListener("modernnav:accent-extracted", onExtracted);
     return () => window.removeEventListener("modernnav:accent-extracted", onExtracted);
   }, []);
-  const previewBackground = useResolvedBackground(bgInput);
   useEffect(() => {
     const next = draftFromPrefs(prefs, currentBackground);
     const untouched = JSON.stringify(draft) === JSON.stringify(syncedRef.current);
@@ -381,47 +379,15 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
   return (
     <>
       <SettingsContainer style={previewStyles}>
-        {/* Background + Theme Color Preview */}
-        <section className="surface-elevated border border-default rounded-2xl overflow-hidden sticky top-0 z-10">
-            <div className="h-32 relative overflow-hidden group">
-            {previewBackground.startsWith("http") || previewBackground.startsWith("data:") ? (
-              <img
-                src={previewBackground}
-                alt="Background"
-                className="w-full h-full object-cover transition-opacity duration-700"
-                onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
-              />
-            ) : (
-              <div className="w-full h-full" style={{ background: previewBackground }} />
-            )}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div
-                className="rounded-2xl border border-white/20 shadow-2xl transition-all duration-300 relative overflow-hidden"
-                style={{
-                  width: `${(cardWidthInput / 100) * 110}px`,
-                  height: `${(cardHeightInput / 100) * 80}px`,
-                  backdropFilter: `blur(${glassBlur}px) saturate(${glassSaturation}%)`,
-                  WebkitBackdropFilter: `blur(${glassBlur}px) saturate(${glassSaturation}%)`,
-                  background: `linear-gradient(135deg, rgba(255, 255, 255, ${opacityInput + glassTint * 0.3}), rgba(255, 255, 255, ${opacityInput * 0.4}))`,
-                  borderRadius: `${16 * radiusScale}px`,
-                }}
-              >
-                {glassNoise > 0 && (
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      backgroundImage: "url(/noise-texture.svg)",
-                      opacity: glassNoise,
-                      mixBlendMode: "overlay",
-                      borderRadius: "inherit",
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+        {/* Compact two-column layout: halves the page length on wide screens. */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+        {/* Glass Quality */}
+        <SettingsSection
+          icon={Layers}
+          title={t("glass_quality")}
+          description={t("glass_quality_desc")}
+        >
+          <div className="space-y-3">
             <SettingsRow label={t("bg_url_label")}>
               <div className="relative">
                 <ImageIcon
@@ -477,18 +443,8 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                 </button>
               </div>
             </SettingsRow>
-          </div>
-        </section>
 
-        {/* Compact two-column layout: halves the page length on wide screens. */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
-        {/* Glass Quality */}
-        <SettingsSection
-          icon={Layers}
-          title={t("glass_quality")}
-          description={t("glass_quality_desc")}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <RangeSlider
               label={t("glass_blur")}
               value={glassBlur}
@@ -523,6 +479,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
               step={0.05}
               onChange={setGlassTint}
             />
+            </div>
           </div>
         </SettingsSection>
 
