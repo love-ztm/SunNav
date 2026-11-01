@@ -401,9 +401,8 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
           description={t("glass_quality_desc")}
         >
           <div className="space-y-3">
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3 items-end">
-            <SettingsRow label={t("bg_url_label")}>
-              <div className="relative">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3 items-center">
+              <div className="relative" title={t("bg_url_label")}>
                 <ImageIcon
                   size={s(16)}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
@@ -412,7 +411,8 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                   type="text"
                   value={bgInput}
                   onChange={(e) => setBgInput(e.target.value)}
-                  placeholder={t("bg_url_placeholder")}
+                  aria-label={t("bg_url_label")}
+                  placeholder={t("bg_light_placeholder")}
                   className="input-primary pl-10 pr-10 font-mono text-[11px]"
                 />
                 <button
@@ -428,9 +428,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                   <Wallpaper size={s(16)} />
                 </button>
               </div>
-            </SettingsRow>
 
-            <SettingsRow label={t("bg_url_label_dark")}>
               <div className="relative">
                 <Moon
                   size={s(16)}
@@ -440,7 +438,8 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                   type="text"
                   value={bgDarkInput}
                   onChange={(e) => setBgDarkInput(e.target.value)}
-                  placeholder={t("bg_url_placeholder")}
+                  aria-label={t("bg_url_label_dark")}
+                  placeholder={t("bg_dark_placeholder")}
                   className="input-primary pl-10 pr-10 font-mono text-[11px]"
                 />
                 <button
@@ -456,9 +455,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                   <Wallpaper size={s(16)} />
                 </button>
               </div>
-            </SettingsRow>
 
-            <SettingsRow label={t("label_theme_color")}>
               <div className="flex items-center gap-2">
                 <label
                   className="surface-hover rounded-lg p-1 border border-muted cursor-pointer hover:surface-active transition-colors"
@@ -484,7 +481,6 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
                   )}
                 </button>
               </div>
-            </SettingsRow>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
