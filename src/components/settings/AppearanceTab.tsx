@@ -1,15 +1,14 @@
 import React, { useState, useRef, useEffect, useReducer } from "react";
 import {
-  Sliders,
+  LayoutGrid,
   RotateCcw,
   Save,
-  Wand2,
   Loader2,
   Image as ImageIcon,
   Wallpaper,
   Sparkles,
   Moon,
-  Type,
+  Wand2,
 } from "../../utils/icons";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { DEFAULT_BACKGROUND } from "../../services/storage";
@@ -396,7 +395,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
 
         {/* Global Tuning */}
         <SettingsSection
-          icon={Type}
+          icon={Wand2}
           title={t("global_tuning")}
           description={t("global_tuning_desc")}
         >
@@ -577,7 +576,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({
 
         {/* Layout */}
         <SettingsSection
-          icon={Sliders}
+          icon={LayoutGrid}
           title={t("precision_controls")}
           description={t("geometry_layout")}
         >

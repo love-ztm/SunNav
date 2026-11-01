@@ -397,19 +397,19 @@ body {
 }
 
 .theme-light {
-  --surface: #f1f5f9;
-  --surface-elevated: #ffffff;
-  --surface-sunken: #e2e8f0;
-  --surface-hover: rgba(15, 23, 42, 0.05);
-  --surface-active: rgba(15, 23, 42, 0.08);
-  --border: rgba(15, 23, 42, 0.1);
-  --border-muted: rgba(15, 23, 42, 0.06);
+  --surface: #fdf2f7;
+  --surface-elevated: #fffafc;
+  --surface-sunken: #fbe4ee;
+  --surface-hover: rgba(236, 114, 183, 0.07);
+  --surface-active: rgba(236, 114, 183, 0.12);
+  --border: rgba(236, 114, 183, 0.2);
+  --border-muted: rgba(236, 114, 183, 0.1);
   --text: #0f172a;
   --text-secondary: rgba(71, 85, 105, 1);
   --text-muted: rgba(100, 116, 139, 1);
   --overlay: rgba(15, 23, 42, 0.4);
   --overlay-light: rgba(15, 23, 42, 0.15);
-  --input-bg: #ffffff;
+  --input-bg: #fffafc;
 }
 
 /* ===== ANIMATION LEVEL SYSTEM ===== */

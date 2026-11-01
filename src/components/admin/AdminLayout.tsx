@@ -1,14 +1,14 @@
 import React from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
-  LayoutGrid,
-  Settings,
+  FolderOpen,
+  Sliders,
   Image as ImageIcon,
-  Database,
-  ShieldCheck,
+  CloudUpload,
+  Lock,
   LogOut,
   Home,
-  BarChart3,
+  TrendingUp,
 } from "../../utils/icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { storageService } from "../../services/storage";
@@ -21,12 +21,12 @@ import { usePrefersDark } from "../../hooks/usePrefersDark";
 import { resolveThemeMode } from "../../utils/theme";
 
 const NAV = [
-  { to: "/admin/content", labelKey: "tab_content", Icon: LayoutGrid },
-  { to: "/admin/general", labelKey: "tab_general", Icon: Settings },
+  { to: "/admin/content", labelKey: "tab_content", Icon: FolderOpen },
+  { to: "/admin/general", labelKey: "tab_general", Icon: Sliders },
   { to: "/admin/appearance", labelKey: "tab_appearance", Icon: ImageIcon },
-  { to: "/admin/data", labelKey: "tab_data", Icon: Database },
-  { to: "/admin/stats", labelKey: "tab_stats", Icon: BarChart3 },
-  { to: "/admin/security", labelKey: "tab_security", Icon: ShieldCheck },
+  { to: "/admin/data", labelKey: "tab_data", Icon: CloudUpload },
+  { to: "/admin/stats", labelKey: "tab_stats", Icon: TrendingUp },
+  { to: "/admin/security", labelKey: "tab_security", Icon: Lock },
 ] as const;
 
 // Admin-only zoom: the panel's 10-12px type runs small on high-res screens,
