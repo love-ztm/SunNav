@@ -8,7 +8,7 @@ export { default as CheckCircle } from "lucide-react/dist/esm/icons/check-circle
 export { default as CheckCircle2 } from "lucide-react/dist/esm/icons/check-circle-2";
 export { default as ChevronDown } from "lucide-react/dist/esm/icons/chevron-down";
 export { default as Clock } from "lucide-react/dist/esm/icons/clock";
-export { default as CloudUpload } from "lucide-react/dist/esm/icons/cloud-upload";
+export { default as CloudUpload } from "lucide-react/dist/esm/icons/upload-cloud";
 export { default as CloudOff } from "lucide-react/dist/esm/icons/cloud-off";
 export { default as Database } from "lucide-react/dist/esm/icons/database";
 export { default as Download } from "lucide-react/dist/esm/icons/download";
