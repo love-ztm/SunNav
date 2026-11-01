@@ -19,8 +19,9 @@ const CONFIG_KEY = "webdav_config";
 const LAST_KEY = "webdav_last_backup";
 const PREFIX = "sunnav-backup-";
 const NAME_RE = /^sunnav-backup-[\w-]+\.json$/;
+const MAX_TARGETS = 2;
 
-const webdavRateLimiter = new RateLimiter("webdav", 30, 60 * 1000);
+const webdavRateLimiter = new RateLimiter("webdav", 40, 60 * 1000);
 
 interface WebDavConfig {
   url: string;
@@ -34,6 +35,11 @@ interface WebDavConfig {
   enabled: boolean;
 }
 
+interface LastBackup {
+  at?: number;
+  date?: string;
+}
+
 // --- password obfuscation helpers ---
 function encodePw(pw: string): string {
   const bytes = new TextEncoder().encode(pw);
@@ -45,30 +51,7 @@ function decodePw(v: string): string {
   return new TextDecoder().decode(Uint8Array.from(atob(v), (c) => c.charCodeAt(0)));
 }
 
-async function loadConfig(db: D1Database): Promise<WebDavConfig | null> {
-  const row = await db
-    .prepare("SELECT value FROM config WHERE key = ?1")
-    .bind(CONFIG_KEY)
-    .first<{ value: string }>();
-  if (!row?.value) return null;
-  try {
-    const raw = JSON.parse(row.value) as Partial<WebDavConfig>;
-    if (!raw.url || !raw.username || !raw.password) return null;
-    return {
-      url: raw.url,
-      username: raw.username,
-      password: raw.password,
-      path: raw.path || "sunnav-backups",
-      scheduleTime: raw.scheduleTime || "03:00",
-      retention: Math.min(50, Math.max(1, raw.retention || 7)),
-      enabled: raw.enabled === true,
-    };
-  } catch {
-    return null;
-  }
-}
-
-function sanitizeConfig(raw: Partial<WebDavConfig>, prev: WebDavConfig | null): WebDavConfig {
+function sanitizeTarget(raw: Partial<WebDavConfig>, prev: WebDavConfig | null): WebDavConfig {
   const url = String(raw.url || prev?.url || "").trim();
   if (!/^https?:\/\//i.test(url)) throw new Error("WebDAV URL must start with http(s)://");
   const hostname = new URL(url).hostname;
@@ -96,6 +79,67 @@ function sanitizeConfig(raw: Partial<WebDavConfig>, prev: WebDavConfig | null): 
     retention: Math.min(50, Math.max(1, Number(raw.retention) || prev?.retention || 7)),
     enabled: raw.enabled === true,
   };
+}
+
+/** Accepts the current {targets:[...]} shape and the legacy single-target shape. */
+async function loadTargets(db: D1Database): Promise<WebDavConfig[]> {
+  const row = await db
+    .prepare("SELECT value FROM config WHERE key = ?1")
+    .bind(CONFIG_KEY)
+    .first<{ value: string }>();
+  if (!row?.value) return [];
+  try {
+    const parsed = JSON.parse(row.value) as
+      | { targets?: Partial<WebDavConfig>[] }
+      | Partial<WebDavConfig>;
+    let raws: Partial<WebDavConfig>[];
+    if ("targets" in parsed && Array.isArray(parsed.targets)) {
+      raws = parsed.targets as Partial<WebDavConfig>[];
+    } else {
+      const single = parsed as Partial<WebDavConfig>;
+      raws = single.url ? [single] : [];
+    }
+    // Targets were sanitized when saved — load them verbatim (the stored
+    // password is already obfuscated; re-running encodePw would break it).
+    return raws.slice(0, MAX_TARGETS).map((r) => ({
+      url: String(r.url || ""),
+      username: String(r.username || ""),
+      password: String(r.password || ""),
+      path: String(r.path || "sunnav-backups"),
+      scheduleTime: /^\d{2}:\d{2}$/.test(String(r.scheduleTime || "")) ? String(r.scheduleTime) : "03:00",
+      retention: Math.min(50, Math.max(1, Number(r.retention) || 7)),
+      enabled: r.enabled === true,
+    })) as WebDavConfig[];
+  } catch {
+    return [];
+  }
+}
+
+async function saveTargets(db: D1Database, targets: WebDavConfig[]): Promise<void> {
+  await upsertConfig(db, CONFIG_KEY, JSON.stringify({ targets: targets.slice(0, MAX_TARGETS) }));
+}
+
+async function loadLastBackups(db: D1Database): Promise<LastBackup[]> {
+  const row = await db
+    .prepare("SELECT value FROM config WHERE key = ?1")
+    .bind(LAST_KEY)
+    .first<{ value: string }>();
+  try {
+    const parsed = JSON.parse(row?.value || "[]");
+    if (Array.isArray(parsed)) return parsed as LastBackup[];
+    if (parsed && typeof parsed === "object" && ("at" in parsed || "date" in parsed)) {
+      return [parsed as LastBackup]; // legacy single object
+    }
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+function pickTarget(targets: WebDavConfig[], index: number): WebDavConfig {
+  const cfg = targets[Number(index)];
+  if (!cfg) throw new Error("This WebDAV target is not configured");
+  return cfg;
 }
 
 function davBase(cfg: WebDavConfig): string {
@@ -200,7 +244,6 @@ async function runBackup(db: D1Database, cfg: WebDavConfig): Promise<{ name: str
     // Pruning is best-effort; the backup itself already succeeded.
   }
 
-  await upsertConfig(db, LAST_KEY, JSON.stringify({ at: Date.now() }));
   return { name };
 }
 
@@ -256,34 +299,50 @@ async function restoreBackup(
   return { restored: data.categories.length };
 }
 
-/** Lazy cron: run the backup when the caller's local clock has passed the
- *  configured time and today's backup hasn't been taken yet. */
-async function maybeScheduledBackup(
+/** Lazy cron: run each enabled target's backup when the caller's local clock
+ *  has passed its configured time and today's backup hasn't been taken. */
+async function maybeScheduledBackups(
   db: D1Database,
-  cfg: WebDavConfig,
+  targets: WebDavConfig[],
   localDate: string,
   localTime: string
-): Promise<{ ran: boolean; reason?: string; name?: string }> {
-  if (!cfg.enabled) return { ran: false, reason: "disabled" };
-  if (!/^\d{2}:\d{2}$/.test(localTime) || !/^\d{4}-\d{2}-\d{2}$/.test(localDate)) {
-    return { ran: false, reason: "bad clock" };
-  }
-  if (localTime < cfg.scheduleTime) return { ran: false, reason: "too early" };
-  const lastRow = await db
-    .prepare("SELECT value FROM config WHERE key = ?1")
-    .bind(LAST_KEY)
-    .first<{ value: string }>();
-  const last = (() => {
-    try {
-      return JSON.parse(lastRow?.value || "{}") as { date?: string };
-    } catch {
-      return {};
+): Promise<{ ran: boolean; results: { index: number; ran: boolean; reason?: string }[] }> {
+  const lastBackups = await loadLastBackups(db);
+  const results: { index: number; ran: boolean; reason?: string }[] = [];
+  let anyRan = false;
+
+  for (let i = 0; i < targets.length; i++) {
+    const cfg = targets[i];
+    if (!cfg.enabled) {
+      results.push({ index: i, ran: false, reason: "disabled" });
+      continue;
     }
-  })();
-  if (last.date === localDate) return { ran: false, reason: "already done today" };
-  const { name } = await runBackup(db, cfg);
-  await upsertConfig(db, LAST_KEY, JSON.stringify({ at: Date.now(), date: localDate }));
-  return { ran: true, name };
+    if (!/^\d{2}:\d{2}$/.test(localTime) || !/^\d{4}-\d{2}-\d{2}$/.test(localDate)) {
+      results.push({ index: i, ran: false, reason: "bad clock" });
+      continue;
+    }
+    if (localTime < cfg.scheduleTime) {
+      results.push({ index: i, ran: false, reason: "too early" });
+      continue;
+    }
+    if (lastBackups[i]?.date === localDate) {
+      results.push({ index: i, ran: false, reason: "already done today" });
+      continue;
+    }
+    try {
+      await runBackup(db, cfg);
+      lastBackups[i] = { at: Date.now(), date: localDate };
+      results.push({ index: i, ran: true });
+      anyRan = true;
+    } catch (err) {
+      console.error(`WebDAV scheduled backup failed (target ${i}):`, err);
+      results.push({ index: i, ran: false, reason: "backup failed" });
+    }
+  }
+  if (anyRan) {
+    await upsertConfig(db, LAST_KEY, JSON.stringify(lastBackups));
+  }
+  return { ran: anyRan, results };
 }
 
 function jsonOk(data: object) {
@@ -317,61 +376,64 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
 
     const body = (await request.json()) as Record<string, unknown>;
     const action = body.action;
-    const cfg = await loadConfig(env.DB);
+    const targetIndex = Number(body.target) === 1 ? 1 : 0;
+    const targets = await loadTargets(env.DB);
 
     if (action === "get") {
-      const lastRow = await env.DB
-        .prepare("SELECT value FROM config WHERE key = ?1")
-        .bind(LAST_KEY)
-        .first<{ value: string }>();
-      let lastBackup: { at?: number; date?: string } = {};
-      try {
-        lastBackup = JSON.parse(lastRow?.value || "{}");
-      } catch {
-        lastBackup = {};
-      }
-      return jsonOk({
-        config: cfg
-          ? { ...cfg, password: "" }
-          : {
-              url: "",
-              username: "",
-              password: "",
-              path: "sunnav-backups",
-              scheduleTime: "03:00",
-              retention: 7,
-              enabled: false,
-            },
-        lastBackup,
-      });
+      const lastBackups = await loadLastBackups(env.DB);
+      const empty: WebDavConfig = {
+        url: "",
+        username: "",
+        password: "",
+        path: "sunnav-backups",
+        scheduleTime: "03:00",
+        retention: 7,
+        enabled: false,
+      };
+      const masked = [0, 1].map(
+        (i) => (targets[i] ? { ...targets[i], password: "" } : { ...empty })
+      );
+      return jsonOk({ targets: masked, lastBackups });
     }
 
     if (action === "config") {
-      const prev = cfg;
-      const next = sanitizeConfig(body.config as Partial<WebDavConfig>, prev);
-      await upsertConfig(env.DB, CONFIG_KEY, JSON.stringify(next));
+      const raw = (body.config || {}) as { targets?: Partial<WebDavConfig>[] };
+      const raws = Array.isArray(raw.targets) ? raw.targets.slice(0, MAX_TARGETS) : [];
+      const current = await loadTargets(env.DB);
+      const next: WebDavConfig[] = [];
+      for (let i = 0; i < raws.length; i++) {
+        const rawTarget = raws[i];
+        // An untouched empty slot stays empty; blank password keeps the stored one.
+        if (!rawTarget.url && !current[i]) continue;
+        if (!rawTarget.url) {
+          next.push(current[i]);
+          continue;
+        }
+        next.push(sanitizeTarget(rawTarget, current[i] || null));
+      }
+      await saveTargets(env.DB, next);
       return jsonOk({});
     }
 
-    if (!cfg) return jsonError("WebDAV is not configured yet", 409);
+    if (targets.length === 0) return jsonError("WebDAV is not configured yet", 409);
 
     if (action === "list") {
-      return jsonOk({ items: await listBackups(cfg) });
+      return jsonOk({ items: await listBackups(pickTarget(targets, targetIndex)) });
     }
 
     if (action === "backup") {
-      return jsonOk(await runBackup(env.DB, cfg));
+      return jsonOk(await runBackup(env.DB, pickTarget(targets, targetIndex)));
     }
 
     if (action === "restore") {
       const name = String(body.name || "");
-      return jsonOk(await restoreBackup(env.DB, cfg, name));
+      return jsonOk(await restoreBackup(env.DB, pickTarget(targets, targetIndex), name));
     }
 
     if (action === "delete") {
       const name = String(body.name || "");
       if (!NAME_RE.test(name)) return jsonError("Invalid backup file name");
-      const res = await davFetch(cfg, name, { method: "DELETE" });
+      const res = await davFetch(pickTarget(targets, targetIndex), name, { method: "DELETE" });
       if (!res.ok && res.status !== 404) {
         return jsonError(`WebDAV delete failed (${res.status})`);
       }
@@ -383,11 +445,11 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
       const localTime = String(body.localTime || "");
       try {
         return jsonOk(
-          await maybeScheduledBackup(env.DB, cfg, localDate, localTime)
+          await maybeScheduledBackups(env.DB, targets, localDate, localTime)
         );
       } catch (err) {
         console.error("WebDAV scheduled backup failed:", err);
-        return jsonOk({ ran: false, reason: "backup failed" });
+        return jsonOk({ ran: false, results: [] });
       }
     }
 

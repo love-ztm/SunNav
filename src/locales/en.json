@@ -226,5 +226,7 @@
   "webdav_restored": "Restored {count} categories — refresh to apply.",
   "webdav_deleted": "Backup file deleted.",
   "webdav_last_backup": "Last auto backup: {time}",
-  "webdav_failed": "Operation failed, please try again later."
+  "webdav_failed": "Operation failed, please try again later.",
+  "webdav_target1": "Cloud 1",
+  "webdav_target2": "Cloud 2"
 }

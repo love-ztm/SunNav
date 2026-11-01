@@ -226,5 +226,7 @@
   "webdav_restored": "已从备份恢复 {count} 个分类，刷新页面生效。",
   "webdav_deleted": "备份文件已删除。",
   "webdav_last_backup": "上次自动备份：{time}",
-  "webdav_failed": "操作失败，请稍后重试。"
+  "webdav_failed": "操作失败，请稍后重试。",
+  "webdav_target1": "云盘 1",
+  "webdav_target2": "云盘 2"
 }

@@ -3,7 +3,7 @@ import { apiClient } from "../../services/apiClient";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useViewportScale } from "../../hooks/useViewportScale";
 import { getIconSize } from "../../utils/favicon";
-import { SettingsSection, SettingsRow } from "./SettingsPrimitives";
+import { SettingsSection } from "./SettingsPrimitives";
 import { CloudUpload, Download, Loader2, Save, Trash2, Upload } from "../../utils/icons";
 
 interface WebDavConfig {
@@ -14,6 +14,11 @@ interface WebDavConfig {
   scheduleTime: string;
   retention: number;
   enabled: boolean;
+}
+
+interface LastBackup {
+  at?: number;
+  date?: string;
 }
 
 interface BackupEntry {
@@ -46,13 +51,30 @@ function formatEntryTime(name: string): string {
   return new Date(epoch).toLocaleString();
 }
 
+const InlineField: React.FC<{
+  label: string;
+  title?: string;
+  children: React.ReactNode;
+}> = ({ label, title, children }) => (
+  <div className="flex items-center gap-2 min-w-0">
+    <span
+      className="text-[10px] font-bold text-secondary uppercase tracking-wider shrink-0 whitespace-nowrap"
+      title={title}
+    >
+      {label}
+    </span>
+    <div className="flex-1 min-w-0">{children}</div>
+  </div>
+);
+
 export const WebDavBackup: React.FC = () => {
   const { t } = useLanguage();
   const viewportScale = useViewportScale();
   const s = (n: number) => getIconSize(n, viewportScale);
 
-  const [cfg, setCfg] = useState<WebDavConfig>(EMPTY_CFG);
-  const [lastBackupAt, setLastBackupAt] = useState<number | undefined>(undefined);
+  const [targets, setTargets] = useState<WebDavConfig[]>([EMPTY_CFG, EMPTY_CFG]);
+  const [lastBackups, setLastBackups] = useState<LastBackup[]>([]);
+  const [active, setActive] = useState<0 | 1>(0);
   const [items, setItems] = useState<BackupEntry[] | null>(null);
   const [busy, setBusy] = useState<"none" | "save" | "backup" | "list" | "restore" | "delete">(
     "none"
@@ -67,9 +89,12 @@ export const WebDavBackup: React.FC = () => {
     setTimeout(() => setStatus({ type: null, message: "" }), 5000);
   }, []);
 
-  const refreshList = useCallback(async () => {
+  const refreshList = useCallback(async (target: number) => {
     try {
-      const res = await webdavAction<{ items: BackupEntry[] }>({ action: "list" });
+      const res = await webdavAction<{ items: BackupEntry[] }>({
+        action: "list",
+        target,
+      });
       setItems(res.items);
     } catch {
       setItems([]);
@@ -79,19 +104,21 @@ export const WebDavBackup: React.FC = () => {
   useEffect(() => {
     void (async () => {
       try {
-        const res = await webdavAction<{
-          config: WebDavConfig;
-          lastBackup: { at?: number };
-        }>({ action: "get" });
-        setCfg({ ...EMPTY_CFG, ...res.config, password: "" });
-        setLastBackupAt(res.lastBackup?.at);
-        void refreshList();
+        const res = await webdavAction<{ targets: WebDavConfig[]; lastBackups: LastBackup[] }>({
+          action: "get",
+        });
+        const loaded = [0, 1].map(
+          (i) => ({ ...EMPTY_CFG, ...(res.targets[i] || {}), password: "" }) as WebDavConfig
+        );
+        setTargets(loaded);
+        setLastBackups(res.lastBackups || []);
+        void refreshList(active);
       } catch {
-        // Server has no config yet or DB unavailable — form stays empty.
         setItems([]);
       }
     })();
-  }, [refreshList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const run = useCallback(
     async (kind: typeof busy, fn: () => Promise<void>) => {
@@ -99,10 +126,7 @@ export const WebDavBackup: React.FC = () => {
       try {
         await fn();
       } catch (err) {
-        flash(
-          "error",
-          err instanceof Error ? err.message : t("webdav_failed")
-        );
+        flash("error", err instanceof Error ? err.message : t("webdav_failed"));
       } finally {
         setBusy("none");
       }
@@ -110,18 +134,28 @@ export const WebDavBackup: React.FC = () => {
     [flash, t]
   );
 
+  const patchActive = (patch: Partial<WebDavConfig>) =>
+    setTargets((prev) => prev.map((c, i) => (i === active ? { ...c, ...patch } : c)));
+
   const handleSaveCfg = () =>
     run("save", async () => {
-      await webdavAction({ action: "config", config: { ...cfg } });
+      // Only the active tab is written; the other slot keeps whatever it had.
+      await webdavAction({
+        action: "config",
+        config: { targets: targets.map((c, i) => (i === active ? { ...c } : { url: "" })) },
+      });
       flash("success", t("webdav_saved"));
-      void refreshList();
+      void refreshList(active);
     });
 
   const handleBackupNow = () =>
     run("backup", async () => {
-      const res = await webdavAction<{ name: string }>({ action: "backup" });
+      const res = await webdavAction<{ name: string }>({
+        action: "backup",
+        target: active,
+      });
       flash("success", t("webdav_backup_done", { name: res.name }));
-      void refreshList();
+      void refreshList(active);
     });
 
   const handleRestore = (name: string) => {
@@ -130,6 +164,7 @@ export const WebDavBackup: React.FC = () => {
       const res = await webdavAction<{ restored: number }>({
         action: "restore",
         name,
+        target: active,
       });
       flash("success", t("webdav_restored", { count: String(res.restored) }));
     });
@@ -138,14 +173,21 @@ export const WebDavBackup: React.FC = () => {
   const handleDelete = (name: string) => {
     if (!window.confirm(t("webdav_delete_confirm"))) return;
     void run("delete", async () => {
-      await webdavAction({ action: "delete", name });
+      await webdavAction({ action: "delete", name, target: active });
       flash("success", t("webdav_deleted"));
-      void refreshList();
+      void refreshList(active);
     });
   };
 
-  const field =
-    "input-primary py-2 px-3 text-[11px] w-full";
+  const switchTab = (idx: 0 | 1) => {
+    setActive(idx);
+    setItems(null);
+    void refreshList(idx);
+  };
+
+  const cfg = targets[active];
+  const last = lastBackups[active];
+  const field = "input-primary py-2 px-3 text-[11px] w-full";
 
   return (
     <SettingsSection
@@ -154,73 +196,97 @@ export const WebDavBackup: React.FC = () => {
       description={t("webdav_desc")}
     >
       <div className="space-y-3">
-        <label className="flex items-center gap-2 text-[11px] font-bold text-secondary cursor-pointer select-none">
-          <input
-            type="checkbox"
-            checked={cfg.enabled}
-            onChange={(e) => setCfg({ ...cfg, enabled: e.target.checked })}
-            className="w-4 h-4 accent-[var(--theme-primary)]"
-          />
-          {t("webdav_enabled")}
-        </label>
+        {/* Target tabs */}
+        <div className="flex items-center gap-2">
+          {([0, 1] as const).map((idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => switchTab(idx)}
+              className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-colors ${
+                active === idx
+                  ? "bg-[var(--theme-primary)] text-white shadow-lg"
+                  : "text-secondary hover:text-primary surface-hover"
+              }`}
+            >
+              {t(idx === 0 ? "webdav_target1" : "webdav_target2")}
+              {targets[idx].enabled && (
+                <span
+                  className={`inline-block w-1.5 h-1.5 rounded-full ml-1.5 align-middle ${
+                    active === idx ? "bg-white" : "bg-emerald-500"
+                  }`}
+                />
+              )}
+            </button>
+          ))}
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <SettingsRow label={t("webdav_url")}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <InlineField label={t("webdav_url")}>
             <input
               type="text"
               value={cfg.url}
-              onChange={(e) => setCfg({ ...cfg, url: e.target.value })}
+              onChange={(e) => patchActive({ url: e.target.value })}
               placeholder="https://dav.jianguoyun.com/dav/"
               className={field}
             />
-          </SettingsRow>
-          <SettingsRow label={t("webdav_username")}>
+          </InlineField>
+          <InlineField label={t("webdav_username")}>
             <input
               type="text"
               value={cfg.username}
-              onChange={(e) => setCfg({ ...cfg, username: e.target.value })}
+              onChange={(e) => patchActive({ username: e.target.value })}
               autoComplete="off"
               className={field}
             />
-          </SettingsRow>
-          <SettingsRow label={t("webdav_password")} hint={t("webdav_password_hint")}>
+          </InlineField>
+          <InlineField label={t("webdav_password")} title={t("webdav_password_hint")}>
             <input
               type="password"
               value={cfg.password}
-              onChange={(e) => setCfg({ ...cfg, password: e.target.value })}
+              onChange={(e) => patchActive({ password: e.target.value })}
               autoComplete="new-password"
               className={field}
             />
-          </SettingsRow>
-          <SettingsRow label={t("webdav_path")}>
+          </InlineField>
+          <InlineField label={t("webdav_path")}>
             <input
               type="text"
               value={cfg.path}
-              onChange={(e) => setCfg({ ...cfg, path: e.target.value })}
+              onChange={(e) => patchActive({ path: e.target.value })}
               className={field}
             />
-          </SettingsRow>
-          <SettingsRow label={t("webdav_schedule")}>
+          </InlineField>
+          <InlineField label={t("webdav_schedule")}>
             <input
               type="time"
               value={cfg.scheduleTime}
-              onChange={(e) => setCfg({ ...cfg, scheduleTime: e.target.value })}
+              onChange={(e) => patchActive({ scheduleTime: e.target.value })}
               className={field}
             />
-          </SettingsRow>
-          <SettingsRow label={t("webdav_retention")}>
+          </InlineField>
+          <InlineField label={t("webdav_retention")}>
             <input
               type="number"
               min={1}
               max={50}
               value={cfg.retention}
-              onChange={(e) => setCfg({ ...cfg, retention: Number(e.target.value) })}
+              onChange={(e) => patchActive({ retention: Number(e.target.value) })}
               className={field}
             />
-          </SettingsRow>
+          </InlineField>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2 text-[11px] font-bold text-secondary cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={cfg.enabled}
+              onChange={(e) => patchActive({ enabled: e.target.checked })}
+              className="w-4 h-4 accent-[var(--theme-primary)]"
+            />
+            {t("webdav_enabled")}
+          </label>
           <button
             type="button"
             onClick={handleSaveCfg}
@@ -243,9 +309,9 @@ export const WebDavBackup: React.FC = () => {
             )}
             {t("webdav_backup_now")}
           </button>
-          {lastBackupAt ? (
+          {last?.at ? (
             <span className="text-[10px] text-muted">
-              {t("webdav_last_backup", { time: new Date(lastBackupAt).toLocaleString() })}
+              {t("webdav_last_backup", { time: new Date(last.at).toLocaleString() })}
             </span>
           ) : null}
         </div>
