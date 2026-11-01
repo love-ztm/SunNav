@@ -68,9 +68,12 @@ const App: React.FC = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const scaledCardHeight = Math.round(cardHeight * viewportScale);
-  const scaledCardWidth = Math.round(cardWidth * viewportScale);
-  const scaledMaxContainerWidth = Math.round(maxContainerWidth * viewportScale);
+  // Card grid sizes follow admin settings only — no viewport scaling — so
+  // browser zoom scales the whole page uniformly like normal content instead
+  // of reshaping the grid.
+  const scaledCardHeight = cardHeight;
+  const scaledCardWidth = cardWidth;
+  const scaledMaxContainerWidth = maxContainerWidth;
 
   const effectiveColumns = useResponsiveColumns(
     gridColumns,
@@ -166,14 +169,14 @@ const App: React.FC = () => {
               <div
                 className="flex items-center"
                 style={{
-                  gap: `${Math.round(16 * viewportScale)}px`,
-                  marginBottom: `${Math.round(24 * viewportScale)}px`,
+                  gap: "16px",
+                  marginBottom: "24px",
                 }}
               >
                 <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-slate-400/30 dark:to-white/20" />
                 <h3
                   className="font-bold uppercase tracking-[0.2em] px-2 text-slate-400 dark:text-white/50"
-                  style={{ fontSize: `${Math.max(10, Math.round(10 * viewportScale))}px` }}
+                  style={{ fontSize: "10px" }}
                 >
                   {visibleSubCategory.title === "Default"
                     ? visibleCategory?.title
@@ -189,7 +192,6 @@ const App: React.FC = () => {
                     link={link}
                     cardOpacity={cardOpacity}
                     themeMode={themeMode}
-                    viewportScale={viewportScale}
                     scaledCardHeight={scaledCardHeight}
                     iconScale={iconScale}
                     faviconApi={faviconApi}

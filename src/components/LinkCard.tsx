@@ -9,7 +9,6 @@ interface LinkCardProps {
   link: LinkItem;
   cardOpacity: number;
   themeMode: ResolvedTheme;
-  viewportScale: number;
   scaledCardHeight: number;
   /** Icon size as a percentage of card height (see UserPreferences.iconScale). */
   iconScale?: number;
@@ -24,20 +23,19 @@ function LinkCardComponent({
   link,
   cardOpacity,
   themeMode,
-  viewportScale,
   scaledCardHeight,
   iconScale,
   faviconApi,
   onVisit,
 }: LinkCardProps) {
   const iconSource = link.icon || getFaviconUrl(link.url, faviconApi);
-  // Icon scales with the card height (default 32%, clamped 20-72px) so larger
-  // cards don't look empty; scaledCardHeight already includes the viewport.
+  // Card and icon sizes are admin-controlled CSS px (no viewport scaling), so
+  // browser zoom scales the card uniformly like the rest of the page.
   const scaledIconSize = Math.min(
     72,
     Math.max(20, Math.round((scaledCardHeight * (iconScale ?? 32)) / 100))
   );
-  const scaledTitleSize = Math.max(12, Math.round(12 * viewportScale));
+  const scaledTitleSize = 12;
 
   return (
     <GlassCard
