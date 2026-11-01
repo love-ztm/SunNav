@@ -120,6 +120,8 @@ export const DataTab: React.FC<DataTabProps> = ({
         </div>
       </div>
 
+      {/* Three local-backup cards side by side on wide screens */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
       <SettingsSection icon={Download} title={t("backup_config")} description={t("backup_desc")}>
         <button
           onClick={handleExport}
@@ -203,6 +205,7 @@ export const DataTab: React.FC<DataTabProps> = ({
           </div>
         )}
       </SettingsSection>
+      </div>
 
       {importStatus.type && (
         <div
