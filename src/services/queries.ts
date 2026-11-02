@@ -71,6 +71,9 @@ export function useBootstrap() {
       return data;
     },
     placeholderData: () => {
+      // First visit (nothing cached): no placeholder — render the skeleton
+      // instead of the upstream sample categories flashing in.
+      if (localStorage.getItem(LS_KEYS.CATEGORIES) === null) return undefined;
       const categories = readLS<Category[]>(LS_KEYS.CATEGORIES, INITIAL_CATEGORIES);
       const background = localStorage.getItem(LS_KEYS.BACKGROUND) || DEFAULT_BACKGROUND;
       const prefs = readLS<UserPreferences>(LS_KEYS.PREFS, DEFAULT_PREFS);

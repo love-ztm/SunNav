@@ -67,7 +67,7 @@ export const DEFAULT_BACKGROUND = "radial-gradient(circle at 50% -20%, #334155, 
 export const DEFAULT_PREFS: UserPreferences = {
   cardOpacity: 0.1,
   themeColor: DEFAULT_THEME_COLOR,
-  themeMode: ThemeMode.Dark,
+  themeMode: ThemeMode.Light,
   themeColorAuto: true,
   iconScale: 32,
   bgBlur: 0,

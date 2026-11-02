@@ -9,7 +9,7 @@
         try {
           var prefs = {};
           try { prefs = JSON.parse(localStorage.getItem("sunNav_prefs") || "{}") || {}; } catch (e) {}
-          var mode = prefs.themeMode || "dark";
+          var mode = prefs.themeMode || "light";
           var dark =
             mode === "dark" ||
             (mode !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
