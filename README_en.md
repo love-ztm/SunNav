@@ -10,11 +10,12 @@ A personal navigation dashboard with a pink glassmorphism aesthetic. Based on th
 
 - Three-level structure (categories → subgroups → links) with glassmorphism cards
 - Unified search (site / Google / Bing / configurable engines, `/` opens the command palette)
-- Light / dark / system themes, with a dedicated wallpaper for dark mode
+- Light / dark / system themes (light by default), with a dedicated wallpaper for dark mode
 - Daily wallpaper, auto-extracted theme color, background blur, tunable glass settings
 - Card width / height / icon size / **cards per row** — all adjustable in the admin panel
 - Private categories visible only when signed in with the access code
 - Bilingual (English / Chinese), Chinese by default
+- Theme is pre-painted on first load — no dark flash on refresh or in fresh browsers
 - PWA: installable to the home screen
 
 **Admin (`/admin`, default access code `admin`)**
