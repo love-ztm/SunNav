@@ -39,6 +39,8 @@ const App: React.FC = () => {
     searchEngines,
     navStyle,
     searchStyle,
+    isError,
+    refetchBootstrap,
   } = state;
 
   const navigate = useNavigate();
@@ -113,6 +115,26 @@ const App: React.FC = () => {
     const id = setInterval(tick, 10 * 60 * 1000);
     return () => clearInterval(id);
   }, []);
+
+  // Bootstrap failed and nothing cached: show a retry panel instead of the
+  // misleading "no sub-categories" empty state.
+  if (isError && categories.length === 0) {
+    return (
+      <div className="min-h-screen relative flex flex-col items-center justify-center gap-4 px-4">
+        <BackgroundLayer background={background} bgBlur={bgBlur} />
+        <p className="relative z-10 text-sm text-slate-500 dark:text-white/60">
+          {t("load_failed")}
+        </p>
+        <button
+          type="button"
+          onClick={() => void refetchBootstrap()}
+          className="relative z-10 btn-primary py-2 px-6 rounded-xl text-[11px] font-bold uppercase tracking-widest"
+        >
+          {t("click_retry")}
+        </button>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

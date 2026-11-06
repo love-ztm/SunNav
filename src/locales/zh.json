@@ -230,5 +230,7 @@
   "webdav_target1": "云盘 1",
   "webdav_target2": "云盘 2",
   "set_default_cat": "设为打开时默认显示",
-  "unset_default_cat": "取消默认显示"
+  "unset_default_cat": "取消默认显示",
+  "load_failed": "加载失败，请检查网络后重试",
+  "click_retry": "点击重试"
 }

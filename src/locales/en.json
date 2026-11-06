@@ -230,5 +230,7 @@
   "webdav_target1": "Cloud 1",
   "webdav_target2": "Cloud 2",
   "set_default_cat": "Show by default",
-  "unset_default_cat": "Clear default"
+  "unset_default_cat": "Clear default",
+  "load_failed": "Failed to load, please check your network",
+  "click_retry": "Retry"
 }

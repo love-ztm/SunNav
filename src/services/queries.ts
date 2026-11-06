@@ -13,8 +13,10 @@ export const queryClient = new QueryClient({
     queries: {
       staleTime: 30_000,
       gcTime: 1000 * 60 * 60,
-      refetchOnWindowFocus: false,
-      retry: 1,
+      // Self-heal after transient failures: retry harder and refetch when the
+      // user comes back to the tab (e.g. returning from a bookmark page).
+      refetchOnWindowFocus: true,
+      retry: 2,
     },
     mutations: {
       retry: 1,

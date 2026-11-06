@@ -18,7 +18,7 @@ import {
 } from "../constants/defaults";
 
 export const useDashboardLogic = () => {
-  const { data, isLoading, isPlaceholderData } = useBootstrap();
+  const { data, isLoading, isPlaceholderData, isError, refetch } = useBootstrap();
   const updateCategories = useUpdateCategories();
   const updatePrefs = useUpdatePrefs();
   const isMutating = useIsMutating();
@@ -166,6 +166,8 @@ export const useDashboardLogic = () => {
       themeColorAuto,
       themeMode,
       isDefaultCode,
+      isError,
+      refetchBootstrap: refetch,
       activeCategory: effectiveActiveCategory,
       activeSubCategoryId: effectiveActiveSubCategoryId,
       maxContainerWidth,
